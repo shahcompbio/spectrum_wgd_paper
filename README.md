@@ -3,7 +3,9 @@
 
 This repo provides hosts notebooks and a python library packages for the analyses present in [Ongoing genome doubling promotes evolvability and immune dysregulation in ovarian cancer](https://www.biorxiv.org/content/10.1101/2024.07.11.602772v2)
 
-## Setup
+## Setup and environments
+
+Most notebooks use the environment defined in `environments/pip/scdna_general_requirements.txt`.
 
 ### Python package
 
