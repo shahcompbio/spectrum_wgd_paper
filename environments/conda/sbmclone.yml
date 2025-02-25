@@ -1,0 +1,7 @@
+name: sbmclone
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - graph-tool=2.55
+prefix: /home/myersm2/miniforge3/envs/sbmclone
