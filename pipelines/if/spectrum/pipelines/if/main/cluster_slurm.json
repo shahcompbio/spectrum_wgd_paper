@@ -1,0 +1,326 @@
+{
+	"__default__" :
+	{
+		"partition" : "componc_cpu",
+		"mem": "16G",
+		"mem-per-cpu": "16G",
+		"threads" : 1,
+		"time" : "2:00",
+		"extra" : "",
+		"latency": "10",
+		"retries": "1"
+	},
+	"transfer_mrxs_files" :
+	{
+		"retries": "5"
+	},
+	"fetch_svs_files" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "16G",
+		"mem-per-cpu": "16G",
+		"threads" : 1
+	},
+	"tissue_object_detection_cgas_enpp1_dapi_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "128G",
+		"mem-per-cpu": "128G",
+		"threads" : 2,
+		"time" : "144:00:00"
+	},
+	"tissue_object_detection_cd8_sting_dapi_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "64G",
+		"mem-per-cpu": "64G",
+		"threads" : 1,
+		"time" : "144:00:00"
+	},
+	"tissue_object_detection_panck_cgas_dapi_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "32G",
+		"mem-per-cpu": "32G",
+		"threads" : 16,
+		"time" : "144:00:00"
+	},
+	"object_detection_cgas_sting_p53_panck_cd8_dapi_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "32G",
+		"mem-per-cpu": "32G",
+		"threads" : 16,
+		"time" : "144:00:00"
+	},
+	"object_detection_cgas_lsbio_cgas_cst_panck_dapi_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "32G",
+		"mem-per-cpu": "32G",
+		"threads" : 16,
+		"time" : "144:00:00"
+	},
+	"tissue_detection_cgas_sting_p53_panck_cd8_dapi_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "32G",
+		"mem-per-cpu": "32G",
+		"threads" : 2,
+		"time" : "24:00:00"
+	},
+	"merge_object_tissue_segmentation" :
+	{
+		"partition" : "componc_cpu",
+		"mem": "128G",
+		"mem-per-cpu": "128G",
+		"threads" : 1,
+		"time" : "144:00:00"
+	},
+	"format_detection_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "64G",
+		"mem-per-cpu": "64G",
+		"threads" : 1,
+		"time" : "24:00:00"
+	},
+	"generate_analysis_fov_cgas_enpp1_dapi" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "128G",
+		"mem-per-cpu": "128G",
+		"threads" : 1,
+		"time" : "48:00:00"
+	},
+	"generate_benchmark_fov_cgas_enpp1_dapi" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "128G",
+		"mem-per-cpu": "128G",
+		"threads" : 1,
+		"time" : "48:00:00"
+	},
+	"find_annotated_analysis_fov" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "64G",
+		"mem-per-cpu": "64G",
+		"threads" : 1,
+		"time" : "48:00:00"
+	},
+	"generate_analysis_fov_cd8_sting_dapi" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "128G",
+		"mem-per-cpu": "128G",
+		"threads" : 1,
+		"time" : "48:00:00"
+	},
+	"generate_benchmark_fov_cd8_sting_dapi" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "128G",
+		"mem-per-cpu": "128G",
+		"threads" : 1,
+		"time" : "48:00:00"
+	},
+	"find_annotated_benchmark_fov" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "256G",
+		"mem-per-cpu": "256G",
+		"threads" : 1,
+		"time" : "48:00:00"
+	},
+	"find_nearest_detection_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "128G",
+		"mem-per-cpu": "128G",
+		"threads" : 1,
+		"time" : "48:00:00"
+	},
+	"downsample_detections" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "32G",
+		"mem-per-cpu": "32G",
+		"threads" : 1,
+		"time" : "24:00:00"
+	},
+	"apply_thresholds_fov" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "32G",
+		"mem-per-cpu": "32G",
+		"threads" : 1,
+		"time" : "12:00"
+	},
+	"apply_masks_slide_review" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "256G",
+		"mem-per-cpu": "256G",
+		"threads" : 1,
+		"time" : "12:00:00"
+	},
+	"merge_detection_fov" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "200G",
+		"mem-per-cpu": "200G",
+		"threads" : 1,
+		"time" : "24:00"
+	},
+	"merge_detection_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "400G",
+		"mem-per-cpu": "400G",
+		"threads" : 1,
+		"time" : "24:00:00"
+	},
+	"summarize_detection_file" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "64G",
+		"mem-per-cpu": "64G",
+		"time" : "24:00:00",
+		"threads" : 1
+	},
+	"summarize_object_detection_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "128G",
+		"mem-per-cpu": "128G",
+		"time" : "24:00:00",
+		"threads" : 1
+	},
+	"merge_object_detection_summary_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "256G",
+		"mem-per-cpu": "256G",
+		"time" : "24:00:00",
+		"threads" : 1
+	},
+	"merge_region_summaries_fov" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "64G",
+		"mem-per-cpu": "64G",
+		"time" : "24:00:00",
+		"threads" : 4
+	},
+	"merge_nearest_neighbor_statistics" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "64G",
+		"mem-per-cpu": "64G",
+		"time" : "24:00:00",
+		"threads" : 4
+	},
+	"calculate_pn_mn_rate" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "128G",
+		"mem-per-cpu": "128G",
+		"time" : "24:00:00",
+		"threads" : 1
+	},
+	"apply_thresholds_slide" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "32G",
+		"mem-per-cpu": "32G",
+		"threads" : 1,
+		"time" : "12:00:00"
+	},
+	"merge_manual_cell_state_assignments" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "100G",
+		"mem-per-cpu": "100G",
+		"threads" : 1,
+		"time" : "24:00:00"
+	},
+	"plot_manual" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "400G",
+		"mem-per-cpu": "400G",
+		"time" : "24:00:00",
+		"threads" : 1
+	},
+	"plot_astir" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "150G",
+		"mem-per-cpu": "150G",
+		"time" : "24:00:00",
+		"threads" : 1
+	},
+	"plot_classification" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "400G",
+		"mem-per-cpu": "400G",
+		"time" : "24:00:00",
+		"threads" : 1
+	},
+	"plot_ripley_k" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "400G",
+		"mem-per-cpu": "400G",
+		"time" : "24:00:00",
+		"threads" : 1
+	},
+	"cohort_merge" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "256G",
+		"mem-per-cpu": "256G",
+		"time" : "24:00:00",
+		"threads" : 1
+	},
+	"til_quip" :
+	{
+	  	"partition" : "gpuqueue",
+		"mem": "32G",
+		"mem-per-cpu": "32G",
+		"threads" : 16,
+		"time" : "96:00:00"
+	},
+	"nearest_neighbors" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "400G",
+		"mem-per-cpu": "400G",
+		"threads" : 1
+	},
+	"ripley_k" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "64G",
+		"mem-per-cpu": "64G",
+		"threads" : 1
+	},
+	"getis_ord" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "32G",
+		"mem-per-cpu": "32G",
+		"threads" : 1,
+		"time" : "24:00:00"
+	},
+	"unsupervised_clustering" :
+	{
+	  	"partition" : "componc_cpu",
+		"mem": "256G",
+		"mem-per-cpu": "256G",
+		"threads" : 1,
+		"time" : "24:00:00"
+	}
+}

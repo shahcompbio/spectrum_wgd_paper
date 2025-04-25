@@ -1,0 +1,210 @@
+import os
+import pandas as pd
+import json
+
+def get_sample_inventory(sheet_url):
+	inventory = pd.read_csv(sheet_url, sep='\t', dtype={'spectrum_sample_id': object})
+	ids = inventory["spectrum_sample_id"]
+	inventory.index = inventory['spectrum_sample_id']
+	inventory_dict = inventory.to_dict('index')
+	return(inventory_dict)
+
+def get_sample_metadata(sheet_url):
+	metadata = pd.read_csv(sheet_url, sep='\t', dtype={'spectrum_sample_id': object})
+	metadata = metadata[
+		# (metadata.spectrum_sample_id.notnull()) & \
+		# (metadata.submission_status == 'Delivered') & \
+		# (metadata.qc_status == 'Pass') & \
+		(metadata.genomic_instability_inclusion_status == 'Yes') & \
+		# (metadata.region_annotation == 'Yes') & \
+		(metadata.panel.isin(['cGAS, ENPP1, DAPI','CD8, STING, DAPI','panCK, cGAS, DAPI','cGAS, STING, p53, panCK, CD8, DAPI','cGAS-LSBio, cGAS-CST, panCK, DAPI'])) & \
+		# (metadata.spectrum_sample_id.isin(["SPECTRUM-OV-009_S1_LEFT_OVARY_cGAS_STING_p53_panCK_CD8_DAPI_R1"])) & \
+		(~metadata.spectrum_sample_id.isin(["SPECTRUM-OV-003_S2_LEFT_OVARY_cGAS_STING_p53_panCK_CD8_DAPI_R1"]))
+		# (~metadata.spectrum_sample_id.isin(["SPECTRUM-OV-116_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1","SPECTRUM-OV-009_S1_RIGHT_OVARY_cGAS_ENPP1_DAPI_R1"]))
+		# (~metadata.spectrum_sample_id.isin(["SPECTRUM-OV-050_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1","SPECTRUM-OV-107_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2","SPECTRUM-OV-036_S1_RIGHT_ADNEXA_cGAS_ENPP1_DAPI_R2"]))
+		]
+	metadata.index = metadata['spectrum_sample_id']
+	metadata_dict = metadata.to_dict('index')
+	return(metadata_dict)
+
+def get_study_inclusion_metadata(sheet_url):
+	metadata = pd.read_csv(sheet_url, sep='\t')
+	metadata = metadata.query("review == 'Yes'")
+	metadata.index = metadata['spectrum_fov_id']
+	metadata_dict = metadata.to_dict('index')
+	return(metadata_dict)
+
+workflow_name = 'download-data'
+
+output_dir = config['outdir'][workflow_name]
+workspace_dir = config['workspaces'][workflow_name]
+
+sample_inventory = get_sample_inventory(config['cluster_paths_sheet'])
+sample_metadata = get_sample_metadata(config['sample_metadata_sheet'])
+url = 'https://docs.google.com/spreadsheets/d/1UvogBN8nc16OIVKUyA_GtzxiHEGfHsqroldN45-4OKs/export?format=tsv&id=1UvogBN8nc16OIVKUyA_GtzxiHEGfHsqroldN45-4OKs&gid=735527548'
+# url = 'https://docs.google.com/spreadsheets/d/1UvogBN8nc16OIVKUyA_GtzxiHEGfHsqroldN45-4OKs/export?format=tsv&id=1UvogBN8nc16OIVKUyA_GtzxiHEGfHsqroldN45-4OKs&gid=1851351161'
+study_inclusion_metadata = get_study_inclusion_metadata(url)
+
+spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi_blacklist = [
+	'SPECTRUM-OV-002_S1_RIGHT_ADNEXA_cGAS_STING_p53_panCK_CD8_DAPI_R1',
+	'SPECTRUM-OV-022_S1_LEFT_OVARY_cGAS_STING_p53_panCK_CD8_DAPI_R1',
+	'SPECTRUM-OV-050_S1_RIGHT_OVARY_cGAS_STING_p53_panCK_CD8_DAPI_R1'
+]
+
+spectrum_fov_ids = list(study_inclusion_metadata.keys())
+spectrum_sample_ids = [x['spectrum_sample_id'] for x in sample_metadata.values()]
+spectrum_sample_ids_reviewed = {k:v for (k,v) in sample_metadata.items() if v['roi_annotation'] in ['Yes','Maybe'] and v['roi_pixel_classification'] in ['Yes','Maybe']}
+spectrum_sample_ids_cgas_enpp1_dapi = {k:v for (k,v) in sample_metadata.items() if v['panel'] in ['cGAS, ENPP1, DAPI']}
+spectrum_sample_ids_cd8_sting_dapi = {k:v for (k,v) in sample_metadata.items() if v['panel'] in ['CD8, STING, DAPI']}
+spectrum_sample_ids_panck_cgas_dapi = {k:v for (k,v) in sample_metadata.items() if v['panel'] in ['panCK, cGAS, DAPI']}
+spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi = {k:v for (k,v) in sample_metadata.items() if v['panel'] in ['cGAS, STING, p53, panCK, CD8, DAPI']}
+spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi_reviewed = {k:v for (k,v) in sample_metadata.items() if v['region_annotation'] in ['Yes','Maybe'] and v['region_annotator_1'] in ['Ignacio'] and v['panel'] in ['cGAS, STING, p53, panCK, CD8, DAPI'] and v['roi_annotation'] in ['Yes','Maybe'] and v['roi_annotator_1'] in ['Ignacio'] and v['spectrum_sample_id'] not in spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi_blacklist}
+spectrum_sample_ids_cgas_lsbio_cgas_cst_panck_dapi = {k:v for (k,v) in sample_metadata.items() if v['panel'] in ['cGAS-LSBio, cGAS-CST, panCK, DAPI']}
+
+sois = spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi_reviewed
+
+# Convert to value-key pairs
+from collections import defaultdict
+
+inverted_dict = defaultdict(list)
+
+for spectrum_sample_id, metadata in sample_metadata.items():
+	markers = re.sub(r'\W+', '_', metadata['panel'].lower()).strip('_')
+	inverted_dict[markers].append(spectrum_sample_id)
+
+# Convert defaultdict to a regular dict
+config["groups"]["markers"] = dict(inverted_dict)
+
+spectrum_sample_ids_panck_cgas_dapi_reviewed = list(set(spectrum_sample_ids_panck_cgas_dapi) & set(spectrum_sample_ids_reviewed))
+# spectrum_sample_ids_panck_cgas_dapi_reviewed = ['SPECTRUM-OV-051_S1_INFRACOLIC_OMENTUM_panCK_cGAS_DAPI_R1']
+
+spectrum_sample_ids=spectrum_sample_ids_panck_cgas_dapi#spectrum_sample_ids_panck_cgas_dapi_reviewed#config['groups']['panck_cgas_dapi']
+# print({k:v for (k,v) in sample_metadata.items() if v['panel'] in ['CD8, STING, DAPI']})
+# print(spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi)
+
+all_images = \
+	expand(
+		'{outdir}/{subdir}/ome_tiff/{{sample}}.ome.tiff'.format(
+			outdir=config['outdir']['download-data'],
+			subdir=config['outputs']['out'],
+		),
+		sample=list(spectrum_sample_ids_cgas_lsbio_cgas_cst_panck_dapi.keys()),#spectrum_sample_ids_cgas_lsbio_cgas_cst_panck
+	)
+	# expand(
+	# 	'{outdir}/{subdir}/mrxs/{{sample}}.mrxs'.format(
+	# 		outdir=config['outdir']['download-data'],
+	# 		subdir=config['outputs']['out'],
+	# 	),
+	# 	sample=list(spectrum_sample_ids_cgas_lsbio_cgas_cst_panck.keys()),
+	# ) + \
+
+wildcard_constraints: 
+	markers = "cgas_enpp1_dapi|cd8_sting_dapi|panck_cgas_dapi|cgas_sting_p53_panck_cd8_dapi|cgas_lsbio_cgas_cst_panck_dapi",
+	fov_type = "benchmark|analysis"
+	# fov = "*\s\[x\=\d,y\=\d,w\=\d,h\=\d\]"
+# 	fov='|'.join([re.escape(x) for x in spectrum_fov_ids])
+# 	suffix = "\.[a-zA-Z]+\.txt"
+# wildcard_constraints:
+# 	# fov='[^,]+'
+# 	fov= '|'.join([re.escape(x) for x in spectrum_fov_ids]),
+
+# print('|'.join([re.escape(re.sub(",", "\,", x)) for x in fovs]))
+
+# rule all_download_data:
+# 	input:
+# 		expand(
+# 			'{outdir}/{subdir}/v/{{id}}'.format(
+# 				outdir=output_dir,
+# 				subdir=config['outputs']['out']
+# 			),
+# 			id=config['unique_ids']
+# 		)
+
+# rule fetch_svs_files:
+# 	input:
+# 		lambda wildcards: sample_inventory[wildcards.sample]['filename_svs_raw'],
+# 	output:
+# 		bam_file='{outdir}/{subdir}/svs/{{sample}}.svs'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['out']
+# 			),
+# 	params:
+# 		name='fetch-svs-files-{sample}',
+# 	log:
+# 		'{outdir}/{subdir}/fetch_svs_files/{{sample}}.log'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['log']
+# 		),
+# 	benchmark:
+# 		'{outdir}/{subdir}/fetch_svs_files/{{sample}}.txt'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['bench']
+# 		),
+# 	shell:
+# 		'cp -r {input} {output} >& {log}'
+
+# localrules: transfer_mrxs_files
+
+rule transfer_mrxs_files:
+	input:
+		mrxs=lambda wildcards: '{0}.mrxs'.format(sample_inventory[wildcards.sample]['file']),
+		dat=lambda wildcards: sample_inventory[wildcards.sample]['file'],
+	output:
+		mrxs='{outdir}/{subdir}/mrxs/{{sample}}.mrxs'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		dat=directory(
+			'{outdir}/{subdir}/mrxs/{{sample}}'.format(
+				outdir=output_dir,
+				subdir=config['outputs']['out']
+			)
+		),
+	params:
+		name='transfer-mrxs-files-{sample}',
+	log:
+		'{outdir}/{subdir}/transfer_mrxs_files/{{sample}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	benchmark:
+		'{outdir}/{subdir}/transfer_mrxs_files/{{sample}}.txt'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['bench']
+		),
+	shell:
+		# Copy mrxs file
+		'cp -r "{input.mrxs}" "{output.mrxs}" &> {log}; '
+		'chmod 755 "{output.mrxs}" &>> {log}; '
+		# Copy dat directory
+		'cp -r "{input.dat}" "{output.dat}" &>> {log}; '
+		'chmod 755 "{output.dat}" &>> {log}; '
+
+
+# print('{0} OME TIFF/{1}.ome.tiff'.format(sample_inventory["SPECTRUM-OV-009_S1_LEFT_OVARY_cGAS_STING_p53_panCK_CD8_DAPI_R1"]['path'],sample_inventory["SPECTRUM-OV-009_S1_LEFT_OVARY_cGAS_STING_p53_panCK_CD8_DAPI_R1"]['image_id']))
+
+rule transfer_ome_tiff_files:
+	input:
+		ome_tiff=lambda wildcards: '{0} OME TIFF/{1}.ome.tiff'.format(sample_inventory[wildcards.sample]['path'],sample_inventory[wildcards.sample]['image_id']),
+		# ome_tiff=lambda wildcards: 'OME TIFF/{0}.ome.tiff'.format(sample_inventory[wildcards.sample]['file']),
+	output:
+		ome_tiff='{outdir}/{subdir}/ome_tiff/{{sample}}.ome.tiff'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='transfer-ome-tiff-files-{sample}',
+	log:
+		'{outdir}/{subdir}/transfer_ome_tiff_files/{{sample}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	benchmark:
+		'{outdir}/{subdir}/transfer_ome_tiff_files/{{sample}}.txt'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['bench']
+		),
+	shell:
+		# Copy OME tiff file
+		'cp -r "{input.ome_tiff}" "{output.ome_tiff}" &> {log}; '
+		'chmod 755 "{output.ome_tiff}" &>> {log}; '

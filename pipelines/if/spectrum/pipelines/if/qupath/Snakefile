@@ -1,0 +1,1612 @@
+import pandas as pd
+
+workflow_name = 'qupath'
+
+output_dir = config['outdir'][workflow_name]
+workspace_dir = config['workspaces'][workflow_name]
+
+all_detections = \
+	expand(
+		'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}'.format(
+			outdir=config['outdir']['qupath'],
+			subdir=config['outputs']['out'],
+		),
+		markers=['cgas_sting_p53_panck_cd8_dapi'],
+		# markers=['cgas_lsbio_cgas_cst_panck_dapi'],
+		# slide=['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_STING_p53_panCK_CD8_DAPI_R1'],
+		# slide=sois,#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_STING_p53_panCK_CD8_DAPI_R1','SPECTRUM-OV-003_S1_LEFT_ADNEXA_cGAS_STING_p53_panCK_CD8_DAPI_R1'],#spectrum_sample_ids,
+		# slide=['SPECTRUM-OV-051_S1_PELVIC_PERITONEUM_cGAS_STING_p53_panCK_CD8_DAPI_R1'],
+		slide=spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi_reviewed,
+		filename=['object_detection_results.tsv','region_annotation_results.tsv','object_detection_results_annotated.tsv','object_detection_results_assigned.tsv','object_detection_results_filtered_assigned.tsv','object_detection_results_filtered_assigned_downsampled.tsv']
+	) #+ \
+	# expand(
+	# 	'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}'.format(
+	# 		outdir=config['outdir']['qupath'],
+	# 		subdir=config['outputs']['out'],
+	# 	),
+	# 	markers=['cgas_sting_p53_panck_cd8_dapi'],
+	# 	# markers=['cgas_lsbio_cgas_cst_panck_dapi'],
+	# 	# slide=spectrum_sample_ids_panck_cgas_dapi_reviewed,
+	# 	# slide=['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_STING_p53_panCK_CD8_DAPI_R1'],
+	# 	# slide=sois,#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_STING_p53_panCK_CD8_DAPI_R1','SPECTRUM-OV-003_S1_LEFT_ADNEXA_cGAS_STING_p53_panCK_CD8_DAPI_R1'],#spectrum_sample_ids,
+	# 	# slide=['SPECTRUM-OV-051_S1_PELVIC_PERITONEUM_cGAS_STING_p53_panCK_CD8_DAPI_R1'],
+	# 	slide=spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi_reviewed,
+	# 	filename=['region_annotation_results.tsv','object_detection_results_annotated.tsv']#,'object_detection_results_assigned.tsv','object_detection_results_filtered_assigned_downsampled.tsv']
+	# )
+	# expand(
+	# 	'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}'.format(
+	# 		outdir=config['outdir']['qupath'],
+	# 		subdir=config['outputs']['out'],
+	# 	),
+	# 	markers=['cgas_lsbio_cgas_cst_panck_dapi'],
+	# 	slide=spectrum_sample_ids_cgas_lsbio_cgas_cst_panck_dapi,
+	# 	filename=['object_detection_results.tsv']
+	# ) + \
+	# expand(
+	# 	'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}'.format(
+	# 		outdir=config['outdir']['qupath'],
+	# 		subdir=config['outputs']['out'],
+	# 	),
+	# 	markers=['cgas_sting_p53_panck_cd8_dapi'],
+	# 	# slide=spectrum_sample_ids_panck_cgas_dapi_reviewed,
+	# 	# slide=['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_STING_p53_panCK_CD8_DAPI_R1'],
+	# 	# slide=sois,#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_STING_p53_panCK_CD8_DAPI_R1','SPECTRUM-OV-003_S1_LEFT_ADNEXA_cGAS_STING_p53_panCK_CD8_DAPI_R1'],#spectrum_sample_ids,
+	# 	slide=spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi,
+	# 	filename=['object_detection_results_filtered_assigned_downsampled.tsv']
+	# 	# filename=['object_detection_results.tsv','object_detection_results_assigned.tsv','object_detection_results_filtered_assigned_downsampled.tsv']#,'annotated_object_detection_with_thresholds_results.geojson']
+	# ) + \
+	# expand(
+	# 	'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}'.format(
+	# 		outdir=config['outdir']['qupath'],
+	# 		subdir=config['outputs']['out'],
+	# 	),
+	# 	markers=['cgas_sting_p53_panck_cd8_dapi'],
+	# 	slide=spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi_reviewed,
+	# 	filename=['region_annotation_results.tsv','region_annotation_results.geojson']#,'object_detection_results_annotated.tsv','object_detection_results_annotated.geojson']
+	# ) #+ \
+	# expand(
+	# 	'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}'.format(
+	# 		outdir=config['outdir']['qupath'],
+	# 		subdir=config['outputs']['out'],
+	# 	),
+	# 	markers=['panck_cgas_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],#
+	# 	slide=spectrum_sample_ids_panck_cgas_dapi_reviewed,##spectrum_sample_ids#config['groups']['cgas_enpp1_dapi']['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],#
+	# 	filename=['object_detection_results.tsv','object_detection_results_assigned.tsv','object_detection_results_filtered_assigned.tsv','region_annotation_results.tsv','sfe.rds','object_detection_results_micronuclei_assigned.tsv']
+	# 	# filename=['object_detection_results_micronuclei_overlapping.tsv']
+	# ) #+ \
+	# expand(
+	# 	'{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}'.format(
+	# 		outdir=config['outdir']['qupath'],
+	# 		subdir=config['outputs']['out']
+	# 	),
+	# 	cohort=['SPECTRUM'],
+	# 	markers=['cgas_enpp1_dapi'],
+	# 	filename=['object_detection_results.tsv','region_annotation_results.tsv']
+	# )
+
+
+rule generate_analysis_fov_cgas_enpp1_dapi:
+	input:
+		mrxs='{outdir}/{subdir}/mrxs/{{slide}}.mrxs'.format(
+			outdir=config['outdir']['download-data'],
+			subdir=config['outputs']['out']
+		),
+	output:
+		# roi='{outdir}/{subdir}/create_roi/{{slide}}/cgas_enpp1_dapi/roi.tif'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		tiles='{outdir}/{subdir}/generate_fov/{{slide}}/cgas_enpp1_dapi/analysis.tar.gz'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		# tiles=dynamic('{outdir}/{subdir}/generate_fov//{{fov}}.tif'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# )),
+	params:
+		name='generate-fov-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/generate_analysis_fov_cgas_enpp1_dapi/{{slide}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	# singularity: 'docker://ivazquez/qupath:v0.20'
+	singularity: 'docker://druvpatel/qupath-stardist:v6'
+	shell:
+		# 'set +o pipefail; '
+		# 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; '
+		# 'unset DISPLAY; '
+		# # 'xvfb-run -a /QuPath/bin/QuPath '
+		# 'xvfb-run -a java '
+		# '-Djava.awt.headless=true '
+		# '-Djava.library.path=/QuPath/lib/app '
+		# '-cp "/QuPath/lib/app/*" qupath.QuPath '
+		'java '
+		'-Djava.awt.headless=true '
+		# '-Djava.library.path=/QuPath/lib/app '
+		'-Djava.library.path=/qupath-cpu/build/dist/QuPath-0.2.3/lib/app '
+		# '-jar /QuPath/lib/app/qupath-app-0.3.0.jar '
+		'-jar /qupath-cpu/build/dist/QuPath-0.2.3/lib/app/qupath-0.2.3.jar '
+		'script --image={input.mrxs} '
+		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/generate_analysis_fov_cgas_enpp1_dapi.groovy '
+		'&> {log}; '
+		'tar zhcf tiles.tar.gz -C tiles . &>> {log}; '
+		# 'tar -zhcf tiles.tar.gz Tumor Stroma Glass; '
+		'mv tiles.tar.gz {output.tiles} &>> {log}'
+		# 'mv roi.tif {output.roi}'
+
+
+rule generate_analysis_fov_cd8_sting_dapi:
+	input:
+		mrxs='{outdir}/{subdir}/mrxs/{{slide}}.mrxs'.format(
+			outdir=config['outdir']['download-data'],
+			subdir=config['outputs']['out']
+		),
+	output:
+		# roi='{outdir}/{subdir}/create_roi/{{slide}}/cd8_sting_dapi/roi.tif'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		tiles='{outdir}/{subdir}/generate_fov/{{slide}}/cd8_sting_dapi/analysis.tar.gz'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='generate-fov-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/generate_analysis_fov_cd8_sting_dapi/{{slide}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	# singularity: 'docker://ivazquez/qupath:v0.20'
+	singularity: 'docker://druvpatel/qupath-stardist:v6'
+	shell:
+		# 'set +o pipefail; '
+		# 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; '
+		# 'unset DISPLAY; '
+		# # 'xvfb-run -a /QuPath/bin/QuPath '
+		# 'xvfb-run -a java '
+		# '-Djava.awt.headless=true '
+		# '-Djava.library.path=/QuPath/lib/app '
+		# '-cp "/QuPath/lib/app/*" qupath.QuPath '
+		'java '
+		'-Djava.awt.headless=true '
+		# '-Djava.library.path=/QuPath-0.2.3/lib/app '
+		'-Djava.library.path=/qupath-cpu/build/dist/QuPath-0.2.3/lib/app '
+		# '-jar /QuPath-0.2.3/lib/app/qupath-0.2.3.jar '
+		'-jar /qupath-cpu/build/dist/QuPath-0.2.3/lib/app/qupath-0.2.3.jar '
+		'script --image={input.mrxs} '
+		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/generate_analysis_fov_cd8_sting_dapi.groovy '
+		'&> {log}; '
+		'tar zhcf tiles.tar.gz -C tiles . &>> {log}; '
+		'mv tiles.tar.gz {output.tiles} &>> {log}'
+		# 'mv roi.tif {output.roi}'
+
+
+checkpoint find_annotated_analysis_fov:
+	input:
+		tiles='{outdir}/{subdir}/generate_fov/{{slide}}/{{markers}}/{{fov_type}}.tar.gz'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		annotated_tiles_tar='{outdir}/{subdir}/find_annotated_fov/{{slide}}/{{markers}}/{{fov_type}}.tar.gz'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		annotated_tiles_dir=directory('{outdir}/{subdir}/find_annotated_fov/{{slide}}/{{markers}}/{{fov_type}}'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		)),
+	params:
+		name='find-annotated-fov-{slide}-{fov_type}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/find_annotated_fov/{{slide}}/{{markers}}/{{fov_type}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	# shadow: 'shallow'
+	# singularity: 'docker://ivazquez/spectrum-he-pathology:v0.41'
+	shell:
+		'source /home/freemas2/.bashrc; '
+		'source /home/freemas2/software/ifenv/bin/activate; '
+		# 'source /work/shah/vazquezi/software/miniconda3/envs/qupath/bin/activate && '
+		# 'export PATH=\"$PATH:/work/shah/vazquezi/software/miniconda3/bin\" && '
+		# 'source activate geopandas && '
+		'/work/shah/vazquezi/software/miniconda3/envs/qupath/bin/python {params.workspace}/python/find_annotated_tiles.py '
+		'--tile_dir {input.tiles} '
+		'--annotated_tile_dir {output.annotated_tiles_tar} '
+		'--min_percent_positive_pixels 50 '
+		'&> {log}; '
+		'mkdir {output.annotated_tiles_dir}; '
+		'tar xvfz {output.annotated_tiles_tar} -C {output.annotated_tiles_dir} &>> {log}'
+
+
+# checkpoint generate_fov_cgas_enpp1_dapi:
+# 	input:
+# 		mrxs='{outdir}/{subdir}/mrxs/{{slide}}.mrxs'.format(
+# 				outdir=config['outdir']['download-data'],
+# 				subdir=config['outputs']['out']
+# 			),
+# 	output:
+# 		# roi='{outdir}/{subdir}/create_roi/{{slide}}/cgas_enpp1_dapi/roi.tif'.format(
+# 		# 	outdir=output_dir,
+# 		# 	subdir=config['outputs']['out']
+# 		# ),
+# 		tiles=directory('{outdir}/{subdir}/generate_fov/{{slide}}/cgas_enpp1_dapi'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['out']
+# 		)),
+# 		# tiles=dynamic('{outdir}/{subdir}/generate_fov//{{fov}}.tif'.format(
+# 		# 	outdir=output_dir,
+# 		# 	subdir=config['outputs']['out']
+# 		# )),
+# 	params:
+# 		name='generate-fov-{slide}',
+# 		workspace=workspace_dir,
+# 	log:
+# 		'{outdir}/{subdir}/generate_fov_cgas_enpp1_dapi/{{slide}}.log'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['log']
+# 		),
+# 	shadow: 'shallow'
+# 	# singularity: 'docker://ivazquez/qupath:v0.8'
+# 	singularity: 'docker://druvpatel/qupath-stardist:v6'
+# 	shell:
+# 		'java '
+# 		'-Djava.awt.headless=true '
+# 		# '-Djava.library.path=/QuPath/lib/app '
+# 		'-Djava.library.path=/qupath-cpu/build/dist/QuPath-0.2.3/lib/app '
+# 		# '-jar /QuPath/lib/app/qupath-app-0.3.0.jar '
+# 		'-jar /qupath-cpu/build/dist/QuPath-0.2.3/lib/app/qupath-0.2.3.jar '
+# 		'script --image={input.mrxs} '
+# 		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/generate_fov_cgas_enpp1_dapi.groovy '
+# 		'&> {log}; '
+# 		# 'mv tiles {output.tiles}'
+# 		'python {params.workspace}/python/find_annotated_tiles.py '
+# 		'--tile_dir tiles '
+# 		'--annotated_tile_dir {output.tiles} '
+# 		'&>> {log}; '
+# 		# 'mv roi.tif {output.roi}'
+
+rule tissue_object_detection_cgas_enpp1_dapi_fov:
+	input:
+		tif='{outdir}/{subdir}/find_annotated_fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}.tif'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		# tissue_annotation_results='{outdir}/{subdir}/tissue_object_detection/{{slide}}/cgas_enpp1_dapi/tissue_annotation_results.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# tissue_annotation_stream='{outdir}/{subdir}/tissue_object_detection/{{slide}}/cgas_enpp1_dapi/tissue_annotation_stream'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		region_annotation_results_tsv='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		region_annotation_results_geojson='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/region_annotation_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		# region_annotation_stream='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov}}/region_annotation_stream'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		object_detection_results_primary_nuclei_tsv='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/object_detection_results_primary_nuclei.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_primary_nuclei_geojson='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/object_detection_results_primary_nuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_tsv='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/object_detection_results_micronuclei.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_geojson='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/object_detection_results_micronuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_tsv='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_geojson='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/object_detection_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		tissue_image_png='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/tissue_image.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		tissue_image_tif='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/tissue_image.tif'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		tumor_mask='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/tumor_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		stroma_mask='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/stroma_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		glass_mask='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cgas_enpp1_dapi/{{fov_type}}/{{fov}}/glass_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='tissue-object-detection-cgas-enpp1-dapi-{slide}-{fov_type}-{fov}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{fov_type}}/{{fov}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	singularity: 'docker://ivazquez/qupath:v0.21'
+	# singularity: 'docker://druvpatel/qupath-stardist:v6'
+	# wildcard_constraints: 
+	# 	fov = "/[\w\-\s._,=\[\]]+/i"
+	# wildcard_constraints:
+	# 	fov=re.escape(fov)
+	# wildcard_constraints: 
+	# 	markers = "cgas_enpp1_dapi|cd8_sting_dapi",
+	# 	fov_type = "benchmark|analysis",
+	# 	fov='|'.join([re.escape(x) for x in spectrum_fov_ids])
+	# wildcard_constraints:
+	# 	fov='|'.join([re.sub(",", "\\,", x) for x in spectrum_fov_ids])
+	shell:
+		"""
+		set +o pipefail; \
+		export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; \
+		unset DISPLAY; \
+		xvfb-run -a java \
+		-Djava.library.path=/QuPath/lib/app \
+		-cp "/QuPath/lib/app/*" qupath.QuPath \
+		script --image={input.tif:q} \
+		/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_cgas_enpp1_dapi_stardist_segmentation.groovy \
+		&> {log:q};
+		"""
+		# 'set +o pipefail; '
+		# 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; '
+		# 'unset DISPLAY; '
+		# # 'xvfb-run -a /QuPath/bin/QuPath '
+		# 'xvfb-run -a java '
+		# # '-Djava.awt.headless=true '
+		# '-Djava.library.path=/QuPath/lib/app '
+		# '-cp "/QuPath/lib/app/*" qupath.QuPath '
+		# # '--headless '
+		# # '-Djava.library.path=/qupath-cpu/build/dist/QuPath-0.2.3/lib/app '
+		# # '-jar /QuPath/lib/app/qupath-app-0.3.0.jar '
+		# # 'java '
+		# # '-Djava.awt.headless=true '
+		# # '-jar /qupath-cpu/build/dist/QuPath-0.2.3/lib/app/qupath-0.2.3.jar '
+		# 'script --image=\"{input.tif}\" ' 
+		# '/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_cgas_enpp1_dapi_stardist_segmentation.groovy '
+		# '&> "{log}"; '
+		# # 'mv tissue_annotation_results.tsv {output.tissue_annotation_results}; '
+		# # 'mv tissue_annotation_stream {output.tissue_annotation_stream}; '
+		# 'mv region_annotation_results.tsv "{output.region_annotation_results_tsv:q}"; '
+		# 'mv region_annotation_results.geojson "{output.region_annotation_results_geojson:q}"; '
+		# # 'mv region_annotation_stream "{output.region_annotation_stream}"; '
+		# 'head -1 object_detection_results_primary_nuclei.tsv > object_detection_results.tsv; '
+		# 'tail -n +2 -q object_detection_results_*.tsv >> object_detection_results.tsv; '
+		# 'mv object_detection_results.tsv "{output.object_detection_results_tsv:q}"; '
+		# 'mv object_detection_results.geojson "{output.object_detection_results_geojson:q}"; '
+		# 'mv object_detection_results_primary_nuclei.tsv "{output.object_detection_results_primary_nuclei_tsv:q}"; '
+		# 'mv object_detection_results_primary_nuclei.geojson "{output.object_detection_results_primary_nuclei_geojson:q}"; '
+		# 'mv object_detection_results_micronuclei.tsv "{output.object_detection_results_micronuclei_tsv:q}"; '
+		# 'mv object_detection_results_micronuclei.geojson "{output.object_detection_results_micronuclei_geojson:q}"; '
+		# 'mv tissue_image.png "{output.tissue_image_png:q}"; '
+		# 'mv tissue_image.tif "{output.tissue_image_tif:q}"; '
+		# 'mv Tumor_mask.png "{output.tumor_mask:q}"; '
+		# 'mv Stroma_mask.png "{output.stroma_mask:q}"; '
+		# 'mv Glass_mask.png "{output.glass_mask:q}"'
+
+
+rule tissue_object_detection_cd8_sting_dapi_fov:
+	input:
+		tif='{outdir}/{subdir}/find_annotated_fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}.tif'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		# tissue_annotation_results='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/tissue_annotation_results.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# tissue_annotation_stream='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/tissue_annotation_stream'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		region_annotation_results_tsv='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		region_annotation_results_geojson='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/region_annotation_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		# region_annotation_stream='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}region_annotation_stream'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		object_detection_results='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		# object_detection_stream='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/object_detection_stream'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		tissue_image_png='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/tissue_image.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		tissue_image_tif='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/tissue_image.tif'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		tumor_mask='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/tumor_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		stroma_mask='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/stroma_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		glass_mask='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/cd8_sting_dapi/{{fov_type}}/{{fov}}/glass_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='tissue-object-detection-cd8-sting-dapi-{fov}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{fov_type}}/{{fov}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	singularity: 'docker://ivazquez/qupath:v0.21'
+	# singularity: 'docker://druvpatel/qupath-stardist:v6'
+	shell:
+		'set +o pipefail; '
+		'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; '
+		'unset DISPLAY; '
+		# 'xvfb-run -a /QuPath/bin/QuPath '
+		'xvfb-run -a java '
+		# '-Djava.awt.headless=true '
+		'-Djava.library.path=/QuPath/lib/app '
+		'-cp "/QuPath/lib/app/*" qupath.QuPath '
+		# '--headless '
+		# '-Djava.library.path=/qupath-cpu/build/dist/QuPath-0.2.3/lib/app '
+		# '-jar /QuPath/lib/app/qupath-app-0.3.0.jar '
+		# 'java '
+		# '-Djava.awt.headless=true '
+		# '-jar /qupath-cpu/build/dist/QuPath-0.2.3/lib/app/qupath-0.2.3.jar '
+		'script --image=\"{input.tif}\" '
+		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_cd8_sting_dapi_stardist_segmentation.groovy '
+		'&> \"{log}\"; '
+		# 'mv tissue_annotation_results.tsv "{output.tissue_annotation_results}"; '
+		# 'mv tissue_annotation_stream "{output.tissue_annotation_stream}"; '
+		'mv region_annotation_results.tsv \"{output.region_annotation_results_tsv}\"; '
+		'mv region_annotation_results.geojson \"{output.region_annotation_results_geojson}\"; '
+		# 'mv region_annotation_stream "{output.region_annotation_stream}"; '
+		'mv object_detection_results.tsv \"{output.object_detection_results}\"; '
+		# 'mv object_detection_stream "{output.object_detection_stream}"; '
+		'mv tissue_image.png \"{output.tissue_image_png}\"; '
+		'mv tissue_image.tif \"{output.tissue_image_tif}\"; '
+		'mv Tumor_mask.png \"{output.tumor_mask}\"; '
+		'mv Stroma_mask.png \"{output.stroma_mask}\"; '
+		'mv Glass_mask.png \"{output.glass_mask}\"'
+
+# localrules: tissue_object_detection_cgas_enpp1_dapi_slide
+
+rule tissue_object_detection_cgas_enpp1_dapi_slide:
+	input:
+		mrxs=ancient(
+			'{outdir}/{subdir}/mrxs/{{slide}}.mrxs'.format(
+				outdir=config['outdir']['download-data'],
+				subdir=config['outputs']['out']
+		)),
+	output:
+		# tissue_annotation_results='{outdir}/{subdir}/tissue_object_detection/{{slide}}/cgas_enpp1_dapi/tissue_annotation_results.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# tissue_annotation_stream='{outdir}/{subdir}/tissue_object_detection/{{slide}}/cgas_enpp1_dapi/tissue_annotation_stream'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		region_annotation_results_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		region_annotation_results_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/region_annotation_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_primary_nuclei_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/object_detection_results_primary_nuclei.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_primary_nuclei_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/object_detection_results_primary_nuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/object_detection_results_micronuclei.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/object_detection_results_micronuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/object_detection_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		# tissue_image_png='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/tissue_image.png'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# tissue_image_tif='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/tissue_image.tif'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		roi_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/ROI_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		tumor_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/Tumor_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		stroma_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/Stroma_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		vasculature_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/Vasculature_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		glass_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_enpp1_dapi/Glass_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='tissue-object-detection-cgas-enpp1-dapi-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	singularity: 'docker://ivazquez/qupath-cpu:v0.8'
+	# singularity: 'docker://ivazquez/qupath:v0.21'
+	shell:
+		# 'export LD_BIND_NOW=1; '
+		# 'java '
+		# '-Djava.awt.headless=true '
+		# '-Djava.library.path=/QuPath/lib/app '
+		# '-jar /QuPath/lib/app/qupath-app-0.4.3.jar '
+		# 'script --image={input.mrxs} '
+		'set +o pipefail; '
+		# 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; '
+		# 'export JAVA_HOME=/opt/java/openjdk; '
+		'unset DISPLAY; '
+		'xvfb-run -a java '
+		'-Djava.library.path=/QuPath/lib/app '
+		'-cp "/QuPath/lib/app/*" qupath.QuPath '
+		'script --image={input.mrxs} '
+		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_cgas_enpp1_dapi_stardist_segmentation_new_headless_roi.groovy '
+		'&> {log}; '
+		# 'mv tissue_annotation_results.tsv {output.tissue_annotation_results}; '
+		# 'mv tissue_annotation_stream {output.tissue_annotation_stream}; '
+		'mv region_annotation_results.tsv {output.region_annotation_results_tsv}; '
+		'mv region_annotation_results.geojson {output.region_annotation_results_geojson}; '
+		'head -1 object_detection_results_primary_nuclei.tsv > object_detection_results.tsv; '
+		'tail -n +2 -q object_detection_results_*.tsv >> object_detection_results.tsv; '
+		'mv object_detection_results.tsv {output.object_detection_results_tsv}; '
+		'mv object_detection_results.geojson {output.object_detection_results_geojson}; '
+		'mv object_detection_results_primary_nuclei.tsv {output.object_detection_results_primary_nuclei_tsv}; '
+		'mv object_detection_results_primary_nuclei.geojson {output.object_detection_results_primary_nuclei_geojson}; '
+		'mv object_detection_results_micronuclei.tsv {output.object_detection_results_micronuclei_tsv}; '
+		'mv object_detection_results_micronuclei.geojson {output.object_detection_results_micronuclei_geojson}; '
+		# 'mv tissue_image.png {output.tissue_image_png}; '
+		# 'mv tissue_image.tif {output.tissue_image_tif}; '
+		'mv ROI_mask.png {output.roi_mask}; '
+		'mv Tumor_mask.png {output.tumor_mask}; '
+		'mv Stroma_mask.png {output.stroma_mask}; '
+		'mv Vasculature_mask.png {output.vasculature_mask}; '
+		'mv Glass_mask.png {output.glass_mask}'
+
+
+# rule tissue_object_detection_subcellular_cgas_enpp1_dapi_slide:
+# 	input:
+# 		mrxs='{outdir}/{subdir}/mrxs/{{slide}}.mrxs'.format(
+# 				outdir=config['outdir']['download-data'],
+# 				subdir=config['outputs']['out']
+# 			),
+# 	output:
+# 		tissue_annotation_results='{outdir}/{subdir}/tissue_object_detection_subcellular/slide/{{slide}}/cgas_enpp1_dapi/tissue_annotation_results.tsv'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['out']
+# 		),
+# 		tissue_annotation_stream='{outdir}/{subdir}/tissue_object_detection_subcellular/slide/{{slide}}/cgas_enpp1_dapi/tissue_annotation_stream'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['out']
+# 		),
+# 		object_detection_results='{outdir}/{subdir}/tissue_object_detection_subcellular/slide/{{slide}}/cgas_enpp1_dapi/object_detection_results.tsv'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['out']
+# 		),
+# 		object_detection_stream='{outdir}/{subdir}/tissue_object_detection_subcellular/slide/{{slide}}/cgas_enpp1_dapi/object_detection_stream'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['out']
+# 		),
+# 	params:
+# 		name='tissue-object-detection-subcellular-{slide}',
+# 		workspace=workspace_dir,
+# 	log:
+# 		'{outdir}/{subdir}/tissue_object_detection_subcellular/slide/{{slide}}.log'.format(
+# 			outdir=output_dir,
+# 			subdir=config['outputs']['log']
+# 		),
+# 	shadow: 'shallow'
+# 	shell:
+# 		'java '
+# 		'-Djava.awt.headless=true '
+# 		'-Djava.library.path=/QuPath-0.2.3/lib/app '
+# 		'-jar /QuPath-0.2.3/lib/app/qupath-0.2.3.jar '
+# 		'script --image={input.mrxs} '
+# 		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_cgas_enpp1_dapi_analysis_subcellular.groovy '
+# 		'&> {log}; '
+# 		'mv tissue_annotation_results.tsv {output.tissue_annotation_results}; '
+# 		'mv tissue_annotation_stream {output.tissue_annotation_stream}; '
+# 		'mv object_detection_results.tsv {output.object_detection_results}; '
+# 		'mv object_detection_stream {output.object_detection_stream} '
+
+
+rule tissue_object_detection_cd8_sting_dapi_slide:
+	input:
+		mrxs=ancient(
+			'{outdir}/{subdir}/mrxs/{{slide}}.mrxs'.format(
+				outdir=config['outdir']['download-data'],
+				subdir=config['outputs']['out']
+		)),
+	output:
+		# tissue_annotation_results='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/tissue_annotation_results.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# tissue_annotation_stream='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/tissue_annotation_stream'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		region_annotation_results_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		region_annotation_results_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/region_annotation_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		region_annotation_stream='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/region_annotation_stream'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_stream='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/object_detection_stream'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		tissue_image='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/tissue_image.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		tumor_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/Tumor_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		stroma_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/Stroma_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		glass_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/Glass_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		roi='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cd8_sting_dapi/roi.tif'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='tissue-object-detection-cd8-sting-dapi-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/tissue_object_detection/cd8_sting_dapi/slide/{{slide}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	singularity: 'docker://ivazquez/qupath-cpu:v0.8'
+	shell:
+		# 'java '
+		# '-Djava.awt.headless=true '
+		# '-Djava.library.path=/QuPath-0.2.3/lib/app '
+		# '-jar /QuPath-0.2.3/lib/app/qupath-0.2.3.jar '
+		'set +o pipefail; '
+		'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; '
+		'unset DISPLAY; '
+		'xvfb-run -a java '
+		'-Djava.library.path=/QuPath/lib/app '
+		'-cp "/QuPath/lib/app/*" qupath.QuPath '
+		'script --image={input.mrxs} '
+		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_cd8_sting_dapi_stardist_segmentation.groovy '
+		'&> {log}; '
+		# 'mv tissue_annotation_results.tsv {output.tissue_annotation_results}; '
+		# 'mv tissue_annotation_stream {output.tissue_annotation_stream}; '
+		'mv region_annotation_results.tsv {output.region_annotation_results_tsv}; '
+		'mv region_annotation_results.geojson {output.region_annotation_results_geojson}; '
+		'mv region_annotation_stream {output.region_annotation_stream}; '
+		'mv object_detection_results.tsv {output.object_detection_results}; '
+		'mv object_detection_stream {output.object_detection_stream}; '
+		'mv tissue_image.png {output.tissue_image}; '
+		'mv Tumor_mask.png {output.tumor_mask}; '
+		'mv Stroma_mask.png {output.stroma_mask}; '
+		'mv Glass_mask.png {output.glass_mask}; '
+		'mv roi.tif {output.roi}'
+
+
+rule tissue_object_detection_panck_cgas_dapi_slide:
+	input:
+		mrxs=ancient(
+			'{outdir}/{subdir}/mrxs/{{slide}}.mrxs'.format(
+				outdir=config['outdir']['download-data'],
+				subdir=config['outputs']['out']
+		)),
+	output:
+		# tissue_annotation_results='{outdir}/{subdir}/tissue_object_detection/{{slide}}/panck_cgas_dapi/tissue_annotation_results.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# tissue_annotation_stream='{outdir}/{subdir}/tissue_object_detection/{{slide}}/panck_cgas_dapi/tissue_annotation_stream'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		region_annotation_results_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		region_annotation_results_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/region_annotation_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_primary_nuclei_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/object_detection_results_primary_nuclei.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_primary_nuclei_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/object_detection_results_primary_nuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/object_detection_results_micronuclei.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/object_detection_results_micronuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/object_detection_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		# tissue_image_png='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/tissue_image.png'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# tissue_image_tif='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/tissue_image.tif'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		roi_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/ROI_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		tumor_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/Tumor_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		stroma_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/Stroma_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		vasculature_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/Vasculature_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		glass_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/panck_cgas_dapi/Glass_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='tissue-object-detection-panck-cgas--dapi-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	singularity: 'docker://ivazquez/qupath-cpu:v0.8'
+	# singularity: 'docker://ivazquez/qupath:v0.21'
+	threads: 4
+	shell:
+		# 'export LD_BIND_NOW=1; '
+		# 'java '
+		# '-Djava.awt.headless=true '
+		# '-Djava.library.path=/QuPath/lib/app '
+		# '-jar /QuPath/lib/app/qupath-app-0.4.3.jar '
+		# 'script --image={input.mrxs} '
+		'set +o pipefail; '
+		# 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64; '
+		# 'export JAVA_HOME=/opt/java/openjdk; '
+		'unset DISPLAY; '
+		'xvfb-run -a java '
+		'-Djava.library.path=/QuPath/lib/app '
+		'-Djava.util.concurrent.ForkJoinPool.common.parallelism={threads} '
+		# '-Dqupath.numThreads={threads} '
+		'-cp "/QuPath/lib/app/*" qupath.QuPath '
+		'script --image={input.mrxs} '
+		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_panck_cgas_dapi_stardist_segmentation_new_headless_wsi_updated.groovy '
+		'&> {log}; '
+		# 'mv tissue_annotation_results.tsv {output.tissue_annotation_results}; '
+		# 'mv tissue_annotation_stream {output.tissue_annotation_stream}; '
+		'mv region_annotation_results.tsv {output.region_annotation_results_tsv}; '
+		'mv region_annotation_results.geojson {output.region_annotation_results_geojson}; '
+		'head -1 object_detection_results_primary_nuclei.tsv > object_detection_results.tsv; '
+		'tail -n +2 -q object_detection_results_*.tsv >> object_detection_results.tsv; '
+		'mv object_detection_results.tsv {output.object_detection_results_tsv}; '
+		'mv object_detection_results.geojson {output.object_detection_results_geojson}; '
+		'mv object_detection_results_primary_nuclei.tsv {output.object_detection_results_primary_nuclei_tsv}; '
+		'mv object_detection_results_primary_nuclei.geojson {output.object_detection_results_primary_nuclei_geojson}; '
+		'mv object_detection_results_micronuclei.tsv {output.object_detection_results_micronuclei_tsv}; '
+		'mv object_detection_results_micronuclei.geojson {output.object_detection_results_micronuclei_geojson}; '
+		# 'mv tissue_image.png {output.tissue_image_png}; '
+		# 'mv tissue_image.tif {output.tissue_image_tif}; '
+		'mv ROI_mask.png {output.roi_mask}; '
+		'mv Tumor_mask.png {output.tumor_mask}; '
+		'mv Stroma_mask.png {output.stroma_mask}; '
+		'mv Vasculature_mask.png {output.vasculature_mask}; '
+		'mv Glass_mask.png {output.glass_mask}'
+
+
+rule object_detection_cgas_sting_p53_panck_cd8_dapi_slide:
+	input:
+		tiff=ancient(
+			'{outdir}/{subdir}/ome_tiff/{{slide}}.ome.tiff'.format(
+				outdir=config['outdir']['download-data'],
+				subdir=config['outputs']['out']
+		)),
+	output:
+		object_detection_results_primary_nuclei_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/object_detection_results_primary_nuclei.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_primary_nuclei_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/object_detection_results_primary_nuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/object_detection_results_micronuclei.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/object_detection_results_micronuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/object_detection_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='object-detection-cgas-sting-p53-panck-cd8-dapi-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/object_detection/slide/{{slide}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	singularity: 'docker://ivazquez/qupath-cpu:v0.8'
+	threads: 4
+	shell:
+		'set +o pipefail; '
+		'unset DISPLAY; '
+		'xvfb-run -a java '
+		'-Djava.library.path=/QuPath/lib/app '
+		'-Djava.util.concurrent.ForkJoinPool.common.parallelism={threads} '
+		'-cp "/QuPath/lib/app/*" qupath.QuPath '
+		'script --image={input.tiff} '
+		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_cgas_sting_p53_panck_cd8_dapi_stardist_object_segmentation_new_headless_wsi_updated.groovy '
+		'&> {log}; '
+		'head -1 object_detection_results_primary_nuclei.tsv > object_detection_results.tsv; '
+		'tail -n +2 -q object_detection_results_*.tsv >> object_detection_results.tsv; '
+		'mv object_detection_results.tsv {output.object_detection_results_tsv}; '
+		'mv object_detection_results.geojson {output.object_detection_results_geojson}; '
+		'mv object_detection_results_primary_nuclei.tsv {output.object_detection_results_primary_nuclei_tsv}; '
+		'mv object_detection_results_primary_nuclei.geojson {output.object_detection_results_primary_nuclei_geojson}; '
+		'mv object_detection_results_micronuclei.tsv {output.object_detection_results_micronuclei_tsv}; '
+		'mv object_detection_results_micronuclei.geojson {output.object_detection_results_micronuclei_geojson}; '
+
+
+rule tissue_detection_cgas_sting_p53_panck_cd8_dapi_slide:
+	input:
+		tiff=ancient(
+			'{outdir}/{subdir}/ome_tiff/{{slide}}.ome.tiff'.format(
+				outdir=config['outdir']['download-data'],
+				subdir=config['outputs']['out']
+		)),
+	output:
+		# tissue_annotation_results='{outdir}/{subdir}/region_detection/{{slide}}/cgas_sting_p53_panck_cd8_dapi/tissue_annotation_results.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# tissue_annotation_stream='{outdir}/{subdir}/region_detection/{{slide}}/cgas_sting_p53_panck_cd8_dapi/tissue_annotation_stream'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		region_annotation_results_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		region_annotation_results_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/region_annotation_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		# tissue_image_png='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/tissue_image.png'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# tissue_image_tif='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/tissue_image.tif'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# roi_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/ROI_mask.png'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		tumor_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/Tumor_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		stroma_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/Stroma_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		vasculature_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/Vasculature_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		glass_mask='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_sting_p53_panck_cd8_dapi/Glass_mask.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='tissue-detection-cgas-sting-p53-panck-cd8-dapi-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/tissue_detection/slide/{{slide}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	singularity: 'docker://ivazquez/qupath-cpu:v0.8'
+	threads: 4
+	shell:
+		'set +o pipefail; '
+		'unset DISPLAY; '
+		'xvfb-run -a java '
+		'-Djava.library.path=/QuPath/lib/app '
+		'-Djava.util.concurrent.ForkJoinPool.common.parallelism={threads} '
+		'-cp "/QuPath/lib/app/*" qupath.QuPath '
+		'script --image={input.tiff} '
+		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_cgas_sting_p53_panck_cd8_dapi_tissue_segmentation.groovy '
+		'&> {log}; '
+		# 'mv tissue_annotation_results.tsv {output.tissue_annotation_results}; '
+		# 'mv tissue_annotation_stream {output.tissue_annotation_stream}; '
+		'mv region_annotation_results.tsv {output.region_annotation_results_tsv}; '
+		'mv region_annotation_results.geojson {output.region_annotation_results_geojson}; '
+		# 'mv tissue_image.png {output.tissue_image_png}; '
+		# 'mv tissue_image.tif {output.tissue_image_tif}; '
+		# 'mv ROI_mask.png {output.roi_mask}; '
+		'mv Tumor_mask.png {output.tumor_mask}; '
+		'mv Stroma_mask.png {output.stroma_mask}; '
+		'mv Vasculature_mask.png {output.vasculature_mask}; '
+		'mv Glass_mask.png {output.glass_mask}'
+
+
+rule object_detection_cgas_lsbio_cgas_cst_panck_dapi_slide:
+	input:
+		tiff=ancient(
+			'{outdir}/{subdir}/ome_tiff/{{slide}}.ome.tiff'.format(
+				outdir=config['outdir']['download-data'],
+				subdir=config['outputs']['out']
+		)),
+	output:
+		object_detection_results_primary_nuclei_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_lsbio_cgas_cst_panck_dapi/object_detection_results_primary_nuclei.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_primary_nuclei_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_lsbio_cgas_cst_panck_dapi/object_detection_results_primary_nuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_cgas_lsbio_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_lsbio_cgas_cst_panck_dapi/object_detection_results_micronuclei_cgas_lsbio.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_cgas_lsbio_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_lsbio_cgas_cst_panck_dapi/object_detection_results_micronuclei_cgas_lsbio.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_cgas_cst_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_lsbio_cgas_cst_panck_dapi/object_detection_results_micronuclei_cgas_cst.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_micronuclei_cgas_cst_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_lsbio_cgas_cst_panck_dapi/object_detection_results_micronuclei_cgas_cst.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_lsbio_cgas_cst_panck_dapi/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		object_detection_results_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/cgas_lsbio_cgas_cst_panck_dapi/object_detection_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='object-detection-cgas-lsbio-cgas-cst-panck-dapi-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/object_detection/slide/{{slide}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shadow: 'shallow'
+	singularity: 'docker://ivazquez/qupath-cpu:v0.8'
+	threads: 4
+	shell:
+		'set +o pipefail; '
+		'unset DISPLAY; '
+		'xvfb-run -a java '
+		'-Djava.library.path=/QuPath/lib/app '
+		'-Djava.util.concurrent.ForkJoinPool.common.parallelism={threads} '
+		'-cp "/QuPath/lib/app/*" qupath.QuPath '
+		'script --image={input.tiff} '
+		'/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/groovy/run_cgas_lsbio_cgas_cst_panck_dapi_stardist_object_segmentation_new_headless_wsi_updated.groovy '
+		'&> {log}; '
+		'head -1 object_detection_results_primary_nuclei.tsv > object_detection_results.tsv; '
+		'tail -n +2 -q object_detection_results_*.tsv >> object_detection_results.tsv; '
+		'mv object_detection_results.tsv {output.object_detection_results_tsv}; '
+		'mv object_detection_results.geojson {output.object_detection_results_geojson}; '
+		'mv object_detection_results_primary_nuclei.tsv {output.object_detection_results_primary_nuclei_tsv}; '
+		'mv object_detection_results_primary_nuclei.geojson {output.object_detection_results_primary_nuclei_geojson}; '
+		'mv object_detection_results_micronuclei_cgas_lsbio.tsv {output.object_detection_results_micronuclei_cgas_lsbio_tsv}; '
+		'mv object_detection_results_micronuclei_cgas_lsbio.geojson {output.object_detection_results_micronuclei_cgas_lsbio_geojson}; '
+		'mv object_detection_results_micronuclei_cgas_cst.tsv {output.object_detection_results_micronuclei_cgas_cst_tsv}; '
+		'mv object_detection_results_micronuclei_cgas_cst.geojson {output.object_detection_results_micronuclei_cgas_cst_geojson}; '
+
+
+rule merge_object_tissue_segmentation:
+	input:
+		tiff=ancient(
+			'{outdir}/{subdir}/ome_tiff/{{slide}}.ome.tiff'.format(
+				outdir=config['outdir']['download-data'],
+				subdir=config['outputs']['out']
+		)),
+		object_detections_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		region_annotations_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/region_annotation_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		roi_annotations_geojson=ancient('/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/roi-annotation-cgas-sting-p53-panck-cd8-dapi/annotations/roi/{slide}.geojson'),
+	output:
+		annotated_object_detections_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_annotated.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		annotated_object_detections_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_annotated.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='merge-object-tissue-segmentation-{markers}-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/merge_object_tissue_segmentation/slide/{{slide}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	threads: 4
+	shell:
+		'export PATH=\"$PATH:/data1/shahs3/users/vazquezi/software/miniforge3/bin\" && '
+		'source activate qupath; '
+		'python {params.workspace}/python/merge_object_tissue_segmentation_batch_new.py '
+		'--object_detections_geojson "{input.object_detections_geojson}" '
+		'--region_annotations_geojson "{input.region_annotations_geojson}" '
+		'--roi_annotations_geojson "{input.roi_annotations_geojson}" '
+		'--annotated_object_detections_geojson "{output.annotated_object_detections_geojson}" '
+		'--annotated_object_detections_tsv "{output.annotated_object_detections_tsv}" '
+		'&> "{log}"; '
+
+
+rule downsample_detections:
+	input:
+		object_detections_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_filtered_assigned.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		downsampled_object_detections_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_filtered_assigned_downsampled.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='downsample-detections-{markers}-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/downsample_detections/slide/{{slide}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	# shadow: 'shallow'
+	singularity: 'docker://ivazquez/qupath-cpu:v0.8'
+	threads: 4
+	shell:
+		'export PATH=\"$PATH:/data1/shahs3/users/vazquezi/software/miniforge3/bin\" && '
+		'source activate qupath; '
+		'python {params.workspace}/python/downsample_detections.py '
+		'--object_detections_tsv "{input.object_detections_tsv}" '
+		'--downsampled_object_detections_tsv "{output.downsampled_object_detections_tsv}" '
+		'&> "{log}"; '
+
+
+rule apply_marker_thresholds:
+	input:
+		annotated_object_detections_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_annotated.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		annotated_object_detections_with_thresholds_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_annotated_with_thresholds.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='apply-marker-thresholds-{markers}-{slide}',
+		thresholds=config['sample_metadata_sheet'],
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/apply_marker_thresholds/slide/{{slide}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	threads: 4
+	shell:
+		'export PATH=\"$PATH:/data1/shahs3/users/vazquezi/software/miniforge3/bin\" && '
+		'source activate qupath; '
+		'python {params.workspace}/python/apply_marker_thresholds.py '
+		'--object_detections_geojson "{input.annotated_object_detections_geojson}" '
+		'--thresholds "{params.thresholds}" '
+		'--object_detections_with_thresholds_geojson "{output.annotated_object_detections_with_thresholds_geojson}" '
+		'&> "{log}"; '
+
+
+rule format_detection_slide:
+	input:
+		detections='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_annotated.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		# detections='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_annotated.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+	output:
+		detections_formatted='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_formatted.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		pn_detections_formatted='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_primary_nuclei_formatted.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		mn_detections_formatted='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_micronuclei_formatted.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='format-detection',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shell:
+		'Rscript {params.workspace}/R/format_detections.R '
+		'--detections "{input.detections}" '
+		'--image_id "{wildcards.slide}" '
+		'--detections_formatted "{output.detections_formatted}" '
+		'--pn_detections_formatted "{output.pn_detections_formatted}" '
+		'--mn_detections_formatted "{output.mn_detections_formatted}" '
+		'&> "{log}"'
+
+
+rule format_detection_fov:
+	input:
+		'{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		'{outdir}/{subdir}/format_detection/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='format-detection',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/format_detection/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shell:
+		'Rscript {params.workspace}/R/format_detections.R '
+		'--infname "{input}" '
+		'--outfname "{output}" '
+		'&> "{log}"'
+
+
+rule format_region_slide:
+	input:
+		'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		'{outdir}/{subdir}/format_region/slide/{{slide}}/{{markers}}/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='format-region',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/format_region/slide/{{slide}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shell:
+		'Rscript {params.workspace}/R/format_regions.R '
+		'--infname "{input}" '
+		'--outfname "{output}" '
+		'&> "{log}"'
+
+
+rule format_region_fov:
+	input:
+		'{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		'{outdir}/{subdir}/format_region/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='format-region',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/format_region/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shell:
+		'Rscript {params.workspace}/R/format_regions.R '
+		'--infname "{input}" '
+		'--outfname "{output}" '
+		'&> "{log}"'
+
+
+rule find_nearest_detection_slide:
+	input:
+		detections_primary_nuclei='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_primary_nuclei_formatted.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		detections_micronuclei='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_micronuclei_formatted.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		detections_primary_nuclei_assigned='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_primary_nuclei_assigned.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		detections_micronuclei_assigned='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_micronuclei_assigned.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		detections_assigned='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_assigned.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		detections_micronuclei_filtered_assigned='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_micronuclei_filtered_assigned.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		detections_filtered_assigned='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_filtered_assigned.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='find-nearest-detection-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/find_nearest_detection/slide/{{slide}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shell:
+		'export PATH=\"$PATH:/data1/shahs3/users/vazquezi/software/miniforge3/bin\" && '
+		'source activate qupath; '
+		'python {params.workspace}/python/find_nearest_detection.py '
+		'--detections_primary_nuclei "{input.detections_primary_nuclei}" '
+		'--detections_micronuclei "{input.detections_micronuclei}" '
+		'--detections_primary_nuclei_assigned "{output.detections_primary_nuclei_assigned}" '
+		'--detections_micronuclei_assigned "{output.detections_micronuclei_assigned}" '
+		'--detections_assigned "{output.detections_assigned}" '
+		'--detections_micronuclei_filtered_assigned "{output.detections_micronuclei_filtered_assigned}" '
+		'--detections_filtered_assigned "{output.detections_filtered_assigned}" '
+		'&> "{log}"; '
+		# 'head -1 "{output.detections_primary_nuclei_assigned}" > object_detection_results_assigned.tsv; '
+		# 'tail -n +2 -q "{output.detections_primary_nuclei_assigned}" "{output.detections_micronuclei_assigned}" >> "{output.detections_assigned}"; '
+
+
+
+rule find_overlapping_detection_slide:
+	input:
+		detections_primary_nuclei='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_primary_nuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		detections_micronuclei='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_micronuclei.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		# detections_primary_nuclei_assigned='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_primary_nuclei_assigned.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		detections_micronuclei_overlapping_tsv='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_micronuclei_overlapping.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		detections_micronuclei_overlapping_geojson='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_micronuclei_overlapping.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		# detections_assigned='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_assigned.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# detections_micronuclei_filtered_assigned='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_micronuclei_filtered_assigned.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+		# detections_filtered_assigned='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_filtered_assigned.tsv'.format(
+		# 	outdir=output_dir,
+		# 	subdir=config['outputs']['out']
+		# ),
+	params:
+		name='find-nearest-detection-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/find_overlapping_detection_slide/slide/{{slide}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shell:
+		# 'export PATH=\"$PATH:/work/shah/vazquezi/software/miniconda3/bin\" && '
+		# 'source activate geopandas &> "{log}"; '
+		# 'export GDAL_DATA=\"$GDAL_DATA:/work/shah/vazquezi/software/miniconda3/envs/geopandas/share/gdal\" &>> "{log}"; '
+		# 'export PROJ_LIB=\"$PROJ_LIB:/work/shah/vazquezi/software/miniconda3/envs/geopandas/share\" &>> "{log}"; '
+		# 'export PATH=\"/home/freemas2/miniconda3/bin:$PATH\" && '
+		# 'source /home/freemas2/.bashrc && '
+		# '. \"/home/freemas2/miniconda3/etc/profile.d/conda.sh\" && '
+		'source /home/freemas2/software/ifenv/bin/activate && '
+		'/home/freemas2/software/ifenv/bin/python {params.workspace}/python/find_overlapping_detection.py '
+		'--detections_primary_nuclei "{input.detections_primary_nuclei}" '
+		'--detections_micronuclei "{input.detections_micronuclei}" '
+		# '--detections_primary_nuclei_assigned "{output.detections_primary_nuclei_assigned}" '
+		'--detections_micronuclei_overlapping_tsv "{output.detections_micronuclei_overlapping_tsv}" '
+		'--detections_micronuclei_overlapping_geojson "{output.detections_micronuclei_overlapping_geojson}" '
+		# '--detections_assigned "{output.detections_assigned}" '
+		# '--detections_micronuclei_filtered_assigned "{output.detections_micronuclei_filtered_assigned}" '
+		# '--detections_filtered_assigned "{output.detections_filtered_assigned}" '
+		'&> "{log}"; '
+
+
+rule create_sfe_object_slide:
+	input:
+		detection='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/object_detection_results_filtered_assigned.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		region_annotation='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/region_annotation_results.geojson'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		sfe='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/sfe.rds'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='create-sfe-object-{slide}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/create_sfe_object/slide/{{slide}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shell:
+		'Rscript {params.workspace}/R/create_sfe_object.R '
+		'--detection "{input.detection}" '
+		'--region_annotation "{input.region_annotation}" '
+		'--id {wildcards.slide} '
+		'--sfe "{output.sfe}" '
+		'&> "{log}"'
+
+
+rule tiff_2_png:
+	input:
+		'{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{markers}}/{{fov}}/tissue_image.tif'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		png_high_res='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{markers}}/{{fov}}/tissue_image_high_res.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		png_low_res='{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{markers}}/{{fov}}/tissue_image_low_res.png'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='tiff_2_png-{fov}',
+		colors='/data1/shahs3/users/vazquezi/projects/spectrum/resources/annotation/colors.yaml',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/tiff_2_png/fov/{{slide}}/{{markers}}/{{fov}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	singularity:
+		"docker://ivazquez/cytomapper:v0.2"
+	shell:
+		'Rscript {params.workspace}/R/tiff_2_png.R '
+		'--tiff {input} '
+		'--png_high_res {output.png_high_res} '
+		'--png_low_res {output.png_low_res} '
+		'--colors {params.colors} '
+		'&> {log}'
+
+
+rule merge_object_detection_slide:
+	input:
+		object_detection=lambda wildcards: expand(
+			'{outdir}/{subdir}/format_detection/slide/{{slide}}/{{markers}}/object_detection_results.tsv'.format(
+				outdir=config['outdir']['qupath'],
+				subdir=config['outputs']['out'],
+			),
+			slide=spectrum_sample_ids_reviewed,#config['groups'][wildcards.markers],
+			markers=wildcards.markers,
+		),
+	output:
+		object_detection_merged='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/object_detection_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='merge-merge_object_detection_slide',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/merge_detection/{{cohort}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	run:
+		pieces = []
+		for f in input.object_detection:
+			piece = pd.read_csv(f, sep='\t')
+			pieces.append(piece)
+
+		pd.concat(pieces).to_csv(
+			output.object_detection_merged, sep='\t', index=False
+		)
+
+
+rule merge_region_annotation_slide:
+	input:
+		region_annotation=lambda wildcards: expand(
+			'{outdir}/{subdir}/format_region/slide/{{slide}}/{{markers}}/region_annotation_results.tsv'.format(
+				outdir=config['outdir']['qupath'],
+				subdir=config['outputs']['out'],
+			),
+			slide=spectrum_sample_ids_reviewed,#config['groups'][wildcards.markers],
+			markers=wildcards.markers,
+		),
+	output:
+		region_annotation_merged='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/region_annotation_results.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='merge-region-annotation-slide',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/merge_region_annotation_slide/{{cohort}}/{{markers}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	run:
+		pieces = []
+		for f in input.region_annotation:
+			piece = pd.read_csv(f, sep='\t')
+			pieces.append(piece)
+
+		pd.concat(pieces).to_csv(
+			output.region_annotation_merged, sep='\t', index=False
+		)

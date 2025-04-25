@@ -1,0 +1,660 @@
+# Shared configuration
+configfile: "../../../config/if/pilot/v25.yaml"
+
+# Containerization
+singularity: "docker://ivazquez/spectrum:v0.56"
+
+# Sub-pipelines
+include: "../download-data/Snakefile"
+include: "../qupath/Snakefile"
+# include: "../phenotype/Snakefile"
+# include: "../spatial/Snakefile"
+# include: "../features/Snakefile"
+# include: "../integrate/Snakefile"
+include: "../summary/Snakefile"
+# include: "../report/Snakefile"
+# include: "../benchmark/Snakefile"
+
+# argument = '{outdir}/{subdir}/segment_benchmark_fov/fov/{{slide}}/cgas_enpp1_dapi/{{fov}}/object_detection_results_micronuclei.geojson'.format(
+# 		outdir=config['outdir']['evaluation'],
+# 		subdir=config['outputs']['out'],
+# 	)
+
+# print(argument)
+
+# test = glob_wildcards(
+# 	'{outdir}/{subdir}/segment_benchmark_fov/fov/{{slide}}/cgas_enpp1_dapi/{{fov}}/object_detection_results_micronuclei.geojson'.format(
+# 		outdir=config['outdir']['evaluation'],
+# 		subdir=config['outputs']['out'],
+# 	),
+# 	# os.path.join(checkpoint_output, '{slide}/{markers}/{fov}.tif')
+# 	).fov
+
+# detection_summaries = pd.read_csv("../../../results/if/v16/integrate/outputs/cohort_list/SPECTRUM/cgas_enpp1_dapi/analysis/detection_summary.tsv", sep = "\t", names=['path'])
+# print(detection_summaries)
+
+# print(expand(
+# 			'{outdir}/{subdir}/find_annotated_fov/{{slide}}/{{markers}}/benchmark/{{fov}}.tar.gz'.format(
+# 				outdir=config['outdir']['benchmark'],
+# 				subdir=config['outputs']['out'],
+# 			),
+# 			zip,
+# 			slide=list(map(lambda fov: fov.split(" ", 1)[0], config['validation_fovs'])),
+# 			markers=['cgas_enpp1_dapi'],
+# 			fov=config['validation_fovs'],#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],
+# 		))
+
+# print(expand(
+# 			'{outdir}/{subdir}/segment_benchmark_tile/tile/watershed/{{slide}}/cgas_enpp1_dapi/{{fov}}/{{tile}}/object_detection_results.geojson'.format(
+# 				outdir=config['outdir']['benchmark'],
+# 				subdir=config['outputs']['out'],
+# 			),
+# 			zip,
+# 			method=['watershed','stardist'],
+# 			slide=list(map(lambda tile: tile.split(" ", 1)[0], config['validation_tiles'])),
+# 			# markers=['cgas_enpp1_dapi'],
+# 			fov=list(map(lambda tile: " ".join(tile.split(" ", 2)[0:2]), config['validation_tiles'])),
+# 			tile=config['validation_tiles'],
+# 			# slide=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2'],
+# 			# fov=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2 [x=15000,y=10000,w=5000,h=5000]'],
+# 			# tile=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2 [x=15000,y=10000,w=5000,h=5000] [x=750,y=4750,w=250,h=250]']
+# 			# fov=config['validation_fovs'],#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],
+# 			# markers=['cgas_enpp1_dapi'],
+# 		))
+
+# localrules: merge_object_tissue_segmentation
+
+rule all:
+	input:
+		# all_images,
+		# expand(
+		# 	 '{outdir}/{subdir}/apply_masks_review/slide/{{slide}}/cgas_enpp1_dapi/detections_segmented_overlap.tsv'.format(
+		# 		 outdir=config['outdir']['spatial'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=spectrum_sample_ids_reviewed#config['samples']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#
+		# ),
+		all_images,
+		all_detections,
+		all_summary,
+		# expand(
+		# 	 '{outdir}/{subdir}/tissue_object_detection/{{slide}}/{{markers}}/region_annotation_results.tsv'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 markers=['cgas_enpp1_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	 slide=spectrum_sample_ids#config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/tissue_object_detection/{{slide}}/{{markers}}/region_annotation_results.tsv'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 markers=['cd8_sting_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	 slide=config['groups']['cd8_sting_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2']#
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/aggregate_slide/SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1/cgas_enpp1_dapi.txt'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/generate_fov/{{slide}}/cgas_enpp1_dapi/analysis.tar.gz'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=config['groups']['cgas_enpp1_dapi']#[['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2']#'SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/generate_fov/{{slide}}/cd8_sting_dapi/analysis.tar.gz'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=config['groups']['cd8_sting_dapi']#[['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2']#'SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/find_annotated_fov/{{slide}}/cgas_enpp1_dapi/analysis.tar.gz'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-003_S2_RIGHT_OVARY_cGAS_ENPP1_DAPI_R1']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/find_annotated_fov/{{slide}}/cd8_sting_dapi/analysis.tar.gz'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=config['groups']['cd8_sting_dapi']#['SPECTRUM-OV-003_S2_RIGHT_OVARY_CD8_STING_DAPI_R1']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']
+		# ),
+		# "../../../results/if/v18/integrate/outputs/cohort_list/SPECTRUM/cgas_enpp1_dapi/analysis/detection_summary.tsv",
+		# "../../../results/if/v18/integrate/outputs/cohort_list/SPECTRUM/cgas_enpp1_dapi/analysis/binned_detection_summary.tsv",
+		# expand(
+		# 	'{outdir}/{subdir}/find_annotated_fov/{{slide}}/cgas_enpp1_dapi/benchmark/{{fov}}.tar.gz'.format(
+		# 		outdir=config['outdir']['benchmark'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	zip,
+		# 	slide=list(map(lambda fov: fov.split(" ", 1)[0], config['validation_fovs'])),
+		# 	markers=['cgas_enpp1_dapi'],
+		# 	fov=config['validation_fovs'],#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/segment_benchmark_tile/tile/watershed/{{slide}}/cgas_enpp1_dapi/{{fov}}/{{tile}}/object_detection_results.geojson'.format(
+		# 		outdir=config['outdir']['benchmark'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	zip,
+		# 	# method=['watershed'],
+		# 	slide=list(map(lambda tile: tile.split(" ", 1)[0], config['validation_tiles'])),
+		# 	# markers=['cgas_enpp1_dapi'],
+		# 	fov=list(map(lambda tile: " ".join(tile.split(" ", 2)[0:2]), config['validation_tiles'])),
+		# 	tile=config['validation_tiles'],
+		# 	# slide=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2'],
+		# 	# fov=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2 [x=15000,y=10000,w=5000,h=5000]'],
+		# 	# tile=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2 [x=15000,y=10000,w=5000,h=5000] [x=750,y=4750,w=250,h=250]']
+		# 	# fov=config['validation_fovs'],#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],
+		# 	# markers=['cgas_enpp1_dapi'],
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/benchmark_segmentation/tile/watershed/{{slide}}/cgas_enpp1_dapi/{{fov}}/{{tile}}/segmentation.pdf'.format(
+		# 		outdir=config['outdir']['benchmark'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	zip,
+		# 	# method=['watershed'],
+		# 	slide=list(map(lambda tile: tile.split(" ", 1)[0], config['validation_tiles'])),
+		# 	# markers=['cgas_enpp1_dapi'],
+		# 	fov=list(map(lambda tile: " ".join(tile.split(" ", 2)[0:2]), config['validation_tiles'])),
+		# 	tile=config['validation_tiles'],
+		# 	# slide=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2'],
+		# 	# fov=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2 [x=15000,y=10000,w=5000,h=5000]'],
+		# 	# tile=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2 [x=15000,y=10000,w=5000,h=5000] [x=750,y=4750,w=250,h=250]']
+		# 	# fov=config['validation_fovs'],#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],
+		# 	# markers=['cgas_enpp1_dapi'],
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/benchmark_segmentation/cohort/watershed/{{cohort}}/cgas_enpp1_dapi/scores.tsv'.format(
+		# 		outdir=config['outdir']['benchmark'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	cohort=['SPECTRUM'],
+		# 	markers=['cgas_enpp1_dapi'],
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/detection_merged/fov/{{slide}}/{{markers}}/{{fov_type}}.tsv'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2'],#config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']
+		# 	 markers=['cgas_enpp1_dapi'],
+		# 	 fov_type=['analysis']
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/region_annotation_results.tsv'.format(
+		# 		outdir=config['outdir']['qupath'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=spectrum_sample_ids,
+		# 	markers=['cgas_enpp1_dapi'],
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/region_annotation_results.tsv'.format(
+		# 		outdir=config['outdir']['qupath'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=['SPECTRUM-OV-003_S2_RIGHT_OVARY_cGAS_ENPP1_DAPI_R1'],
+		# 	markers=['cgas_enpp1_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	fov_type=['analysis'],
+		# 	fov=['SPECTRUM-OV-003_S2_RIGHT_OVARY_cGAS_ENPP1_DAPI_R1 [x=40000,y=60000,w=5000,h=5000]']
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/region_annotation_results.tsv'.format(
+		# 		outdir=config['outdir']['qupath'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=['SPECTRUM-OV-003_S2_RIGHT_OVARY_CD8_STING_DAPI_R1'],
+		# 	markers=['sting_cd8_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	fov_type=['analysis'],
+		# 	fov=['SPECTRUM-OV-003_S2_RIGHT_OVARY_CD8_STING_DAPI_R1 [x=40000,y=60000,w=5000,h=5000]']
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/apply_thresholds/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/phenotypes.tsv'.format(
+		# 		outdir=config['outdir']['phenotype'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=['SPECTRUM-OV-003_S2_RIGHT_OVARY_cGAS_ENPP1_DAPI_R1'],
+		# 	markers=['cgas_enpp1_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	fov_type=['analysis'],
+		# 	fov=['SPECTRUM-OV-003_S2_RIGHT_OVARY_cGAS_ENPP1_DAPI_R1 [x=40000,y=60000,w=5000,h=5000]']
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/apply_thresholds/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/phenotypes.tsv'.format(
+		# 		outdir=config['outdir']['phenotype'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=['SPECTRUM-OV-003_S2_RIGHT_OVARY_CD8_STING_DAPI_R1'],
+		# 	markers=['cgas_enpp1_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	fov_type=['analysis'],
+		# 	fov=['SPECTRUM-OV-003_S2_RIGHT_OVARY_CD8_STING_DAPI_R1 [x=40000,y=60000,w=5000,h=5000]']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/generate_fov/{{slide}}/cd8_sting_dapi'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=config['groups']['cd8_sting_dapi']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R1']#config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/tissue_object_detection/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/region_annotation_results.tsv'.format(
+		# 		outdir=config['outdir']['qupath'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R1'],
+		# 	markers=['cd8_sting_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	fov_type=['analysis'],
+		# 	fov=['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R1 [x=50000,y=100000,w=5000,h=5000]']
+		# ),
+		#### Benchmark
+		# expand(
+		# 	'{outdir}/{subdir}/benchmark_fov/{{slide}}/{{markers}}'.format(
+		# 		outdir=config['outdir']['evaluation'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2'],#config['validation_slides'],#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],
+		# 	markers=['cgas_enpp1_dapi'],
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/benchmark_segmentation/slide/{{slide}}/cgas_enpp1_dapi/scores.tsv'.format(
+		# 		outdir=config['outdir']['evaluation'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2'],#config['validation_slides'],#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],
+		# ),
+		# aggregate_benchmark_segmentation_slide,
+		# expand(
+		# 	'{outdir}/{subdir}/benchmark_segmentation/{{slide}}/fov/cgas_enpp1_dapi/{{fov}}/dice.tsv'.format(
+		# 		outdir=config['outdir']['evaluation'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	# slide=config['validation'],#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],\
+		# 	slide=glob_wildcards(
+		# 		'{outdir}/{subdir}/segment_benchmark_fov/fov/{{slide}}/cgas_enpp1_dapi/{{fov}}/object_detection_results_micronuclei.geojson'.format(
+		# 			outdir=config['outdir']['evaluation'],
+		# 			subdir=config['outputs']['out'],
+		# 		),
+		# 		# os.path.join(checkpoint_output, '{slide}/{markers}/{fov}.tif')
+		# 		).slide,
+		# 	fov=glob_wildcards(
+		# 		'{outdir}/{subdir}/segment_benchmark_fov/fov/{{slide}}/cgas_enpp1_dapi/{{fov}}/object_detection_results_micronuclei.geojson'.format(
+		# 			outdir=config['outdir']['evaluation'],
+		# 			subdir=config['outputs']['out'],
+		# 		),
+		# 		# os.path.join(checkpoint_output, '{slide}/{markers}/{fov}.tif')
+		# 		).fov,
+		# 	markers=['cgas_enpp1_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/generate_fov/{{slide}}/cd8_sting_dapi'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=config['groups']['cd8_sting_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#config['groups']['cgas_enpp1_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/detection_merged/{{cohort}}/{{markers}}.tsv'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# 	 cohort=['SPECTRUM']
+		# 	#  nuclei=['primary_nuclei']#['primary_nuclei','micronuclei']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/cohort_list/{{cohort}}/{{markers}}/{{fov_type}}/phenotypes.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 fov_type=['analysis'],
+		# 	 markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# 	 cohort=['SPECTRUM']
+		# # ),
+		# expand(
+		# 	 '{outdir}/{subdir}/slide_list/{{slide}}/{{markers}}/{{fov_type}}/object_detection_results.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 fov_type=['analysis'],
+		# 	 markers=['cgas_enpp1_dapi'],
+		# 	#  slide=['SPECTRUM-OV-003_S1_LEFT_UPPER_QUADRANT_CD8_STING_DAPI_R3','SPECTRUM-OV-004_S1_RIGHT_ADNEXA_cGAS_ENPP1_DAPI_R2'],
+		# 	 slide=config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-067_S1_LEFT_COLON_PARACOLIC_GUTTER_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-090_S1_TRANSVERSE_COLON_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-112_S1_LEFT_OVARY_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-036_S1_PELVIC_PERITONEUM_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-022_S1_LEFT_OVARY_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-003_S1_RIGHT_UPPER_QUADRANT_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-031_S1_LEFT_FALLOPIAN_TUBE_cGAS_ENPP1_DAPI_R2','SPECTRUM-OV-082_S1_SMALL_BOWEL_MESENTERY_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-009_S1_PELVIC_PERITONEUM_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-025_S1_BOWEL_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-112_S1_BLADDER_SEROSA_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2','SPECTRUM-OV-003_S2_RIGHT_DIAPHRAGM_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-009_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2','SPECTRUM-OV-036_S1_RIGHT_ADNEXA_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-065_S1_RIGHT_OVARY_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-009_S1_PELVIC_PERITONEUM_cGAS_ENPP1_DAPI_R2','SPECTRUM-OV-065_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-003_S1_PELVIC_PERITONEUM_cGAS_ENPP1_DAPI_R1','SPECTRUM-OV-054_S1_RIGHT_OVARY_cGAS_ENPP1_DAPI_R1']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/slide_list/{{slide}}/{{markers}}/{{fov_type}}/object_detection_results.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 fov_type=['analysis'],
+		# 	 markers=['cd8_sting_dapi'],
+		# 	#  /SPECTRUM-OV-031_S1_INFRARENAL_LYMPH_NODE_CD8_STING_DAPI_R2, SPECTRUM-OV-004_S1_RIGHT_ADNEXA_CD8_STING_DAPI_R1
+		# 	slide=config['groups']['cd8_sting_dapi']#['SPECTRUM-OV-031_S1_INFRARENAL_LYMPH_NODE_CD8_STING_DAPI_R2','SPECTRUM-OV-004_S1_RIGHT_ADNEXA_CD8_STING_DAPI_R1','SPECTRUM-OV-036_S1_RIGHT_ADNEXA_CD8_STING_DAPI_R3','SPECTRUM-OV-003_S1_LEFT_UPPER_QUADRANT_CD8_STING_DAPI_R3','SPECTRUM-OV-083_S1_LEFT_ADNEXA_CD8_STING_DAPI_R1','SPECTRUM-OV-107_S1_SIGMOID_COLON_CD8_STING_DAPI_R1']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/cohort_merge/{{cohort}}/{{markers}}/{{fov_type}}/all.rds'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 fov_type=['analysis'],
+		# 	 markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# 	 cohort=['SPECTRUM']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/detection_summary/{{sample}}/{{markers}}.tsv'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 sample=config['groups']['cgas_enpp1_dapi'],
+		# 	 markers=['cgas_enpp1_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/detection_summary/{{sample}}/{{markers}}.tsv'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 sample=config['groups']['cd8_sting_dapi'],
+		# 	 markers=['cd8_sting_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/density/fov/{{slide}}/{{markers}}/{{fov}}/univariate_map_phenotype1.png'.format(
+		# 		 outdir=config['outdir']['spatial'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],
+		# 	 fov=['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1_[x=34356.0,y=98684.0,w=5000.0,h=5000.0]_Tumor_1'],
+		# 	 markers=['cgas_enpp1_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/features/cohort/{{cohort}}/{{markers}}/continuous_variable_cluster_stats.tsv'.format(
+		# 		 outdir=config['outdir']['features'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 cohort=['SPECTRUM'],
+		# 	 markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/detection_summary/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/detection_summary.tsv'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 slide=['SPECTRUM-OV-009_S1_LEFT_OVARY_cGAS_ENPP1_DAPI_R1'],
+		# 	 fov=['SPECTRUM-OV-009_S1_LEFT_OVARY_cGAS_ENPP1_DAPI_R1 [x=15360,y=81920,w=5120,h=5120]'],
+		# 	 markers=['cgas_enpp1_dapi'],#,'cd8_sting_dapi'],
+		# 	 fov_type=['analysis']
+		# ),
+		# detection_summaries['path'],
+		# '../../../results/if/v19/integrate/outputs/slide_list/SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2/cgas_enpp1_dapi/analysis/detection_summary.tsv',
+		# expand(
+		# 	 '{outdir}/{subdir}/detection_summary/cohort/{{cohort}}/{{markers}}/{{fov_type}}/detection_summary.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 cohort=['SPECTRUM'],
+		# 	 markers=['cgas_enpp1_dapi'],#,'cd8_sting_dapi'],
+		# 	 fov_type=['analysis']
+		# ),
+		# '../../../results/if/v18/qupath/outputs/tissue_object_detection/fov/SPECTRUM-OV-014_S1_RIGHT_DIAPHRAGM_cGAS_ENPP1_DAPI_R1/cgas_enpp1_dapi/analysis/SPECTRUM-OV-014_S1_RIGHT_DIAPHRAGM_cGAS_ENPP1_DAPI_R1 [x=25600,y=92160,w=5120,h=5120]/object_detection_results.tsv'
+		# "../../../results/if/v19/qupath/outputs/tissue_object_detection/fov/SPECTRUM-OV-009_S1_LEFT_OVARY_CD8_STING_DAPI_R1/cd8_sting_dapi/analysis/SPECTRUM-OV-009_S1_LEFT_OVARY_CD8_STING_DAPI_R1 [x=12800,y=87040,w=2560,h=2560]/object_detection_results.tsv",
+		# '../../../results/if/v19/qupath/outputs/tissue_object_detection/fov/SPECTRUM-OV-009_S1_LEFT_OVARY_cGAS_ENPP1_DAPI_R1/cgas_enpp1_dapi/analysis/SPECTRUM-OV-009_S1_LEFT_OVARY_cGAS_ENPP1_DAPI_R1 [x=15360,y=84480,w=2560,h=2560]/object_detection_results.tsv'
+		# expand(
+		# 	 '{outdir}/{subdir}/region_summary/cohort/{{cohort}}/{{markers}}/{{fov_type}}/region_summary.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 cohort=['SPECTRUM'],
+		# 	 markers=['cgas_enpp1_dapi'],#,'cd8_sting_dapi'],
+		# 	 fov_type=['analysis']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/nearest_neighbors/cohort/{{cohort}}/{{markers}}/{{fov_type}}/count_within.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 cohort=['SPECTRUM'],
+		# 	 markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# 	 fov_type=['analysis']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/nearest_neighbors/cohort/{{cohort}}/{{markers}}/{{fov_type}}/nn_distance.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 cohort=['SPECTRUM'],
+		# 	 markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# 	 fov_type=['analysis']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/cohort_list/{{cohort}}/{{markers}}/{{fov_type}}/object_detection_results.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 cohort=['SPECTRUM'],
+		# 	 markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# 	 fov_type=['analysis']
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/cohort_list/{{cohort}}/{{markers}}/{{fov_type}}/count_within.tsv'.format(
+		# 		outdir=config['outdir']['integrate'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	cohort=['SPECTRUM'],
+		# 	markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# 	fov_type=['analysis']
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/cohort_list/{{cohort}}/{{markers}}/{{fov_type}}/nn_distance.tsv'.format(
+		# 		outdir=config['outdir']['integrate'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	cohort=['SPECTRUM'],
+		# 	markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# 	fov_type=['analysis']
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/nearest_neighbors/cohort/{{cohort}}/{{markers}}/{{fov_type}}/nn_distance.tsv'.format(
+		# 		outdir=config['outdir']['integrate'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	cohort=['SPECTRUM'],
+		# 	markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# 	fov_type=['analysis']
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/nearest_neighbors/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/count_within.tsv'.format(
+		# 		outdir=config['outdir']['spatial'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2'],
+		# 	markers=['cgas_enpp1_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	fov_type=['analysis'],
+		# 	fov=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2 [x=15000,y=15000,w=5000,h=5000]']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/quadrat/cohort/{{cohort}}/{{markers}}/stats.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 cohort=['SPECTRUM'],
+		# 	 markers=['cgas_enpp1_dapi','cd8_sting_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/features/cohort/{{cohort}}/{{markers}}/stats.tsv'.format(
+		# 		 outdir=config['outdir']['integrate'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 cohort=['SPECTRUM'],
+		# 	 markers=['cgas_enpp1_dapi','cd8_sting_dapi']
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/format_detection/{{sample}}/{{markers}}/object_detection_results.tsv'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 markers=['cgas_enpp1_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	 sample=config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#
+		# ),
+		# expand(
+		# 	 '{outdir}/{subdir}/format_detection/{{sample}}/{{markers}}/object_detection_results.tsv'.format(
+		# 		 outdir=config['outdir']['qupath'],
+		# 		 subdir=config['outputs']['out'],
+		# 	 ),
+		# 	 markers=['cd8_sting_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+		# 	 sample=config['groups']['cd8_sting_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/apply_thresholds/{{sample}}/{{markers}}/phenotypes.tsv'.format(
+		# 		outdir=config['outdir']['phenotype'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	# cohort=['SPECTRUM'],
+		# 	markers=['cgas_enpp1_dapi'],
+		# 	sample=config['groups']['cgas_enpp1_dapi']#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1']#
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/apply_thresholds/{{sample}}/{{markers}}/phenotypes.tsv'.format(
+		# 		outdir=config['outdir']['phenotype'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	# cohort=['SPECTRUM'],
+		# 	markers=['cd8_sting_dapi'],
+		# 	sample=config['groups']['cd8_sting_dapi']
+		# ),
+		# # expand(
+		# # 	'{outdir}/{subdir}/astir/{{sample}}/{{markers}}/cell_state_assignments.tsv'.format(
+		# # 		outdir=config['outdir']['phenotype'],
+		# # 		subdir=config['outputs']['out'],
+		# # 	),
+		# # 	sample=config['groups']['cgas_enpp1_dapi'],##,#config['samples']
+		# # 	markers=['cgas_enpp1_dapi'],
+		# # ),
+		# # expand(
+		# # 	'{outdir}/{subdir}/astir/{{sample}}/{{markers}}/cell_state_assignments.tsv'.format(
+		# # 		outdir=config['outdir']['phenotype'],
+		# # 		subdir=config['outputs']['out'],
+		# # 	),
+		# # 	sample=config['groups']['cd8_sting_dapi'],#['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2'],#,#config['samples']
+		# # 	markers=['cd8_sting_dapi'],
+		# # ),
+		# expand(
+		# 	'{outdir}/{subdir}/merge_manual/{{cohort}}/{{markers}}/phenotype_assignments.tsv'.format(
+		# 		outdir=config['outdir']['phenotype'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	cohort=['SPECTRUM'],
+		# 	markers=['cgas_enpp1_dapi','cd8_sting_dapi']
+		# ),
+		# # expand(
+		# # 	'{outdir}/{subdir}/merge_astir/{{cohort}}/{{markers}}/cell_state_assignments.tsv'.format(
+		# # 		outdir=config['outdir']['phenotype'],
+		# # 		subdir=config['outputs']['out'],
+		# # 	),
+		# # 	cohort=['SPECTRUM'],
+		# # 	markers=['cgas_enpp1_dapi','cd8_sting_dapi']
+		# # ),
+		# # expand(
+		# # 	'{outdir}/{subdir}/plot_astir/{{cohort}}/astir.html'.format(
+		# # 		outdir=config['outdir']['report'],
+		# # 		subdir=config['outputs']['out'],
+		# # 	),
+		# # 	cohort=['SPECTRUM'],
+		# # ),
+		# expand(
+		# 	'{outdir}/{subdir}/plot_classification/{{cohort}}/classification.html'.format(
+		# 		outdir=config['outdir']['report'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	cohort=['SPECTRUM'],
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/plot_manual/{{cohort}}/manual.html'.format(
+		# 		outdir=config['outdir']['report'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	cohort=['SPECTRUM'],
+		# ),
+		# # # expand(
+		# # # 	'{outdir}/{subdir}/apply_masks/{{sample}}/{{markers}}/pp.rds'.format(
+		# # # 		outdir=config['outdir']['spatial'],
+		# # # 		subdir=config['outputs']['out'],
+		# # # 	),
+		# # # 	sample=config['groups']['cgas_enpp1_dapi'],
+		# # # 	markers=['cgas_enpp1_dapi'],
+		# # # ),
+		# # # expand(
+		# # # 	'{outdir}/{subdir}/apply_masks/{{sample}}/{{markers}}/pp.rds'.format(
+		# # # 		outdir=config['outdir']['spatial'],
+		# # # 		subdir=config['outputs']['out'],
+		# # # 	),
+		# # # 	sample=config['groups']['cd8_sting_dapi'],
+		# # # 	markers=['cd8_sting_dapi'],
+		# # # ),
+		# # # # # expand(
+		# # # # # 	'{outdir}/{subdir}/getis_ord/{{sample}}/{{markers}}/hotspots.rds'.format(
+		# # # # # 		outdir=config['outdir']['spatial'],
+		# # # # # 		subdir=config['outputs']['out'],
+		# # # # # 	),
+		# # # # # 	sample=['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R1'],#config['groups']['cgas_enpp1_dapi'],
+		# # # # # 	markers=['cgas_enpp1_dapi'],
+		# # # # # ),
+		# # # # # expand(
+		# # # # # 	'{outdir}/{subdir}/getis_ord/{{sample}}/{{markers}}/hotspots.rds'.format(
+		# # # # # 		outdir=config['outdir']['spatial'],
+		# # # # # 		subdir=config['outputs']['out'],
+		# # # # # 	),
+		# # # # # 	sample=['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_CD8_STING_DAPI_R2'],#config['groups']['cd8_sting_dapi'],
+		# # # # # 	markers=['cd8_sting_dapi'],
+		# # # # # ),
+		# # # expand(
+		# # # 	'{outdir}/{subdir}/ripley_k/{{sample}}/{{markers}}/k_stat_all.rds'.format(
+		# # # 		outdir=config['outdir']['spatial'],
+		# # # 		subdir=config['outputs']['out'],
+		# # # 	),
+		# # # 	sample=config['groups']['cgas_enpp1_dapi'],
+		# # # 	markers=['cgas_enpp1_dapi'],
+		# # # ),
+		# # # expand(
+		# # # 	'{outdir}/{subdir}/ripley_k/{{sample}}/{{markers}}/k_stat_all.rds'.format(
+		# # # 		outdir=config['outdir']['spatial'],
+		# # # 		subdir=config['outputs']['out'],
+		# # # 	),
+		# # # 	sample=config['groups']['cd8_sting_dapi'],
+		# # # 	markers=['cd8_sting_dapi'],
+		# # # ),
+		# # # expand(
+		# # # 	'{outdir}/{subdir}/spatial_clustering_combined/{{cohort}}/{{markers}}/k_stat_all_merged.rds'.format(
+		# # # 		outdir=config['outdir']['spatial'],
+		# # # 		subdir=config['outputs']['out'],
+		# # # 	),
+		# # # 	cohort=['SPECTRUM'],
+		# # # 	markers=['cgas_enpp1_dapi','cd8_sting_dapi'],
+		# # # ),
+		# expand(
+		# 	'{outdir}/{subdir}/pn_mn_rates/cohort/{{cohort}}/{{markers}}/{{fov_type}}/micronuclei_slide.tsv'.format(
+		# 		outdir=config['outdir']['summary'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	cohort=['SPECTRUM'],#config['groups']['cgas_enpp1_dapi'],
+		# 	markers=['cgas_enpp1_dapi'],
+		# 	fov_type=['analysis'],
+		# ),
+		# expand(
+		# 	'{outdir}/{subdir}/density/fov/{{slide}}/{{markers}}/{{fov_type}}/{{fov}}/scatter_overlay.pdf'.format(
+		# 		outdir=config['outdir']['spatial'],
+		# 		subdir=config['outputs']['out'],
+		# 	),
+		# 	slide=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2'],#config['groups']['cgas_enpp1_dapi'],
+		# 	markers=['cgas_enpp1_dapi'],
+		# 	fov_type=['analysis'],
+		# 	fov=['SPECTRUM-OV-003_S1_INFRACOLIC_OMENTUM_cGAS_ENPP1_DAPI_R2 [x=15360,y=10240,w=5120,h=5120]'],
+		# ),
+		

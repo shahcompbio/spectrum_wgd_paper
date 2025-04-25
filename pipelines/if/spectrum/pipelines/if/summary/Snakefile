@@ -1,0 +1,170 @@
+workflow_name = 'summary'
+
+output_dir = config['outdir'][workflow_name]
+workspace_dir = config['workspaces'][workflow_name]
+
+all_summary = \
+	expand(
+		'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}/{{summary_filename}}.tsv'.format(
+			outdir=config['outdir']['summary'],
+			subdir=config['outputs']['out'],
+		),
+		# slide=['SPECTRUM-OV-002_S1_INFRACOLIC_OMENTUM_cGAS_STING_p53_panCK_CD8_DAPI_R1','SPECTRUM-OV-003_S1_LEFT_ADNEXA_cGAS_STING_p53_panCK_CD8_DAPI_R1'],#spectrum_sample_ids,
+		# slide=spectrum_sample_ids_cgas_lsbio_cgas_cst_panck_dapi,
+		slide=spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi_reviewed,
+		# slide=sois,#spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi,#,spectrum_sample_ids_reviewed,
+		markers=['cgas_sting_p53_panck_cd8_dapi'],#['cgas_lsbio_cgas_cst_panck_dapi'],['cgas_enpp1_dapi','sting_cd8_dapi'],
+		filename=['object_detection_results_assigned','object_detection_results_filtered_assigned'],
+		summary_filename=['detection_summary_slide','detection_summary_roi','detection_summary_region','assigned_detection_summary','binned_detection_summary'],
+	) + \
+	expand(
+		'{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/{{summary_filename}}.tsv'.format(
+			outdir=config['outdir']['summary'],
+			subdir=config['outputs']['out'],
+		),
+		cohort=['SPECTRUM'],
+		markers=['cgas_sting_p53_panck_cd8_dapi'],#['cgas_lsbio_cgas_cst_panck_dapi'],['cgas_enpp1_dapi','sting_cd8_dapi'],
+		filename=['object_detection_results_assigned','object_detection_results_filtered_assigned'],
+		summary_filename=['detection_summary_slide','detection_summary_roi','detection_summary_region','assigned_detection_summary','binned_detection_summary','pn_mn_rates_slide','pn_mn_rates_roi','pn_mn_rates_region','pn_mn_rates_compartment_slide','pn_mn_rates_compartment_roi','pn_mn_rates_compartment_region'],
+	)
+	# expand(
+	# 	'{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/pn_mn_rates_slide.tsv'.format(
+	# 		outdir=config['outdir']['summary'],
+	# 		subdir=config['outputs']['out'],
+	# 	),
+	# 	cohort=['SPECTRUM'],
+	# 	markers=['cgas_sting_p53_panck_cd8_dapi'],#['cgas_enpp1_dapi','sting_cd8_dapi'],
+	# 	filename=['object_detection_results_assigned','object_detection_results_filtered_assigned'],
+	# )
+
+
+rule summarize_object_detection_slide:
+	input:
+		'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}.tsv'.format(
+			outdir=config['outdir']['qupath'],
+			subdir=config['outputs']['out']
+		),
+	output:
+		detection_summary_slide='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}/detection_summary_slide.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		detection_summary_roi='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}/detection_summary_roi.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		detection_summary_region='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}/detection_summary_region.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		assigned_detection_summary='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}/assigned_detection_summary.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		binned_detection_summary='{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}/binned_detection_summary.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='summarize-detection-file-{slide}-{markers}-{filename}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/summarize_object_detection_slide/{{slide}}/{{markers}}/{{filename}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shell:
+		'Rscript {params.workspace}/R/summarize_detections.R '
+		'--detection {input} '
+		'--detection_summary_slide {output.detection_summary_slide} '
+		'--detection_summary_roi {output.detection_summary_roi} '
+		'--detection_summary_region {output.detection_summary_region} '
+		'--assigned_detection_summary {output.assigned_detection_summary} '
+		'--binned_detection_summary {output.binned_detection_summary} '
+		'&> {log}'
+
+rule merge_object_detection_summary_slide:
+	input:
+		summary=lambda wildcards: expand(
+			'{outdir}/{subdir}/tissue_object_detection/slide/{{slide}}/{{markers}}/{{filename}}/{{summary_filename}}.tsv'.format(
+				outdir=config['outdir']['summary'],
+				subdir=config['outputs']['out'],
+			),
+			# slide=config['groups']['markers'][wildcards.markers],
+			slide=spectrum_sample_ids_cgas_sting_p53_panck_cd8_dapi_reviewed,#config['groups']['markers'][wildcards.markers],
+			markers=wildcards.markers,
+			filename=wildcards.filename,
+			summary_filename=wildcards.summary_filename
+		),
+	output:
+		summary_merged='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/{{summary_filename}}.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='merge-object-detection-summary-slide-{cohort}-{markers}-{filename}-{summary_filename}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/merge_object_detection_summary_slide/{{cohort}}/{{markers}}/{{filename}}/{{summary_filename}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	run:
+		pieces = []
+		for f in input.summary:
+			piece = pd.read_csv(f, sep='\t')
+			pieces.append(piece)
+
+		pd.concat(pieces).to_csv(
+			output.summary_merged, sep='\t', index=False
+		)
+
+rule calculate_pn_mn_rate:
+	input:
+		detection_summaries='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/detection_summary_region.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	output:
+		pn_mn_rates_slide='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/pn_mn_rates_slide.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		pn_mn_rates_roi='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/pn_mn_rates_roi.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		pn_mn_rates_region='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/pn_mn_rates_region.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		pn_mn_rates_compartment_slide='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/pn_mn_rates_compartment_slide.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		pn_mn_rates_compartment_roi='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/pn_mn_rates_compartment_roi.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+		pn_mn_rates_compartment_region='{outdir}/{subdir}/tissue_object_detection/cohort/{{cohort}}/{{markers}}/{{filename}}/pn_mn_rates_compartment_region.tsv'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['out']
+		),
+	params:
+		name='calculate-pn-mn-rate-{cohort}-{markers}-{filename}',
+		workspace=workspace_dir,
+	log:
+		'{outdir}/{subdir}/calculate_pn_mn_rate/cohort/{{cohort}}/{{markers}}/{{filename}}.log'.format(
+			outdir=output_dir,
+			subdir=config['outputs']['log']
+		),
+	shell:
+		'Rscript {params.workspace}/R/calculate_pn_mn_rate.R '
+		'--detection_summaries "{input.detection_summaries}" '
+		'--pn_mn_rates_slide "{output.pn_mn_rates_slide}" '
+		'--pn_mn_rates_roi "{output.pn_mn_rates_roi}" '
+		'--pn_mn_rates_region "{output.pn_mn_rates_region}" '
+		'--pn_mn_rates_compartment_slide "{output.pn_mn_rates_compartment_slide}" '
+		'--pn_mn_rates_compartment_roi "{output.pn_mn_rates_compartment_roi}" '
+		'--pn_mn_rates_compartment_region "{output.pn_mn_rates_compartment_region}" '
+		'&> "{log}"'
