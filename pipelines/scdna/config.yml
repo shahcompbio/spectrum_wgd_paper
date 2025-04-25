@@ -1,0 +1,25 @@
+
+# Path to python binary in general python environment
+python_bin: '/data1/shahs3/users/mcphera1/repos/spectrumanalysis/venv/bin/python'
+
+# Path to python binary in pyro environment
+python_pyro_bin: '/data1/shahs3/users/mcphera1/repos/spectrumanalysis/venv_pyro/bin/python'
+
+# Path to python binary for SBMClone environment
+python_sbmclone_bin: '/home/mcphera1/micromamba/envs/sbmclone/bin/python'
+
+# Path to medicc2 binary
+medicc2_bin: '/home/mcphera1/micromamba/envs/medicc2/bin/medicc2'
+
+# Path to Jupytext binary
+jupytext_bin: '/home/mcphera1/micromamba/envs/jupyterlab/bin/jupytext'
+
+# Parameters for SBMClone
+sbmclone_restarts: 10
+sbmclone_max_blocks: 10
+
+# Parameters for tree_snv (i.e., DoubleTime) analysis
+tree_snv_binarization_threshold: 0.01
+tree_snv_min_clone_size: 20
+across_clones_cna_homogeneity_threshold: 0.9
+within_clone_cna_homogeneity_threshold: 0.8

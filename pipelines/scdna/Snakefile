@@ -1,0 +1,192 @@
+configfile: 'config.yaml'
+
+import os
+import pandas as pd
+import numpy as np
+
+if 'spectrumanalysis_repo' not in config:
+    config['spectrumanalysis_repo'] = os.path.realpath(os.path.join(workflow.basedir, '../..'))
+
+if 'reference_directory' not in config:
+    config['reference_directory'] = os.environ['REFERENCE_DIR']
+
+if 'output_directory' not in config:
+    config['output_directory'] = os.path.join(os.environ['SPECTRUM_PROJECT_DIR'])
+
+infercnv_plot_dir = config.get('infercnv_plot_dir', '/home/zatzmanm/work/repos/spectrum_scrna/spectrum_genomic_instability/plots/infercnv')
+
+python_bin = config.get('python_bin', 'python')
+python_pyro_bin = config.get('python_pyro_bin', 'python')
+python_sbmclone_bin = config.get('python_sbmclone_bin', 'python')
+jupytext_bin = config.get('jupytext_bin', 'jupytext')
+medicc2_bin = config.get('medicc2_bin', 'medicc2')
+
+signals_singularity_image = config.get('signals_singularity_image', "/data1/shahs3/users/william1/software/singularity/signals_v0.11.2.sif")
+
+# Read variables from config file
+spectrumanalysis_repo = config['spectrumanalysis_repo'].rstrip('/')
+output_directory = config['output_directory'].rstrip('/')
+
+multipolar_nnd_threshold = 0.31734256961919605 # this threshold works for both DLP and PDX samples, could be good default
+sbmclone_restarts = config['sbmclone_restarts']
+sbmclone_max_blocks = config['sbmclone_max_blocks']
+
+tree_snv_binarization_threshold = config['tree_snv_binarization_threshold']
+tree_snv_min_clone_size = config['tree_snv_min_clone_size']
+across_clones_cna_homogeneity_threshold = config['across_clones_cna_homogeneity_threshold']
+within_clone_cna_homogeneity_threshold = config['within_clone_cna_homogeneity_threshold']
+
+whitelist_bins_file = os.path.join(spectrumanalysis_repo, 'pipelines/scdna/inputs/whitelist_bins.csv.gz')
+signals_table = os.path.join(spectrumanalysis_repo, 'pipelines/scdna/inputs/signals_table.csv')
+hmmcopy_table = os.path.join(spectrumanalysis_repo, 'pipelines/scdna/inputs/hmmcopy_table.csv')
+
+signals_info = pd.read_csv(signals_table)
+hmmcopy_info = pd.read_csv(hmmcopy_table)
+
+# Remove patients OV-077 and OV-116: few cells, no ArtiCull results
+blacklist_patients = ['SPECTRUM-OV-077', 'SPECTRUM-OV-116']
+signals_info = signals_info[~signals_info['isabl_patient_id'].isin(blacklist_patients)].copy()
+hmmcopy_info = hmmcopy_info[~hmmcopy_info['isabl_patient_id'].isin(blacklist_patients)].copy()
+
+patient_ids = hmmcopy_info['isabl_patient_id'].unique()
+assert(len(patient_ids) == len(np.unique(patient_ids)))
+
+aliquot_patient_ids = hmmcopy_info['isabl_patient_id'].values
+aliquot_ids = hmmcopy_info['isabl_aliquot_id'].values
+assert(len(aliquot_ids) == len(np.unique(aliquot_ids)))
+
+tree_snv_patient_ids = sorted(patient_ids)
+# 024 has almost all 2xWGD cells
+if 'SPECTRUM-OV-024' in patient_ids:
+    tree_snv_patient_ids.remove('SPECTRUM-OV-024')
+# 125 SBMClone clones are too small
+if 'SPECTRUM-OV-125' in patient_ids:
+    tree_snv_patient_ids.remove('SPECTRUM-OV-125')
+
+# Annotation files
+#
+
+manual_normal_cells_csv = os.path.join(spectrumanalysis_repo, 'annotations/aberrant_normal_cells.csv')
+doublets_csv = os.path.join(spectrumanalysis_repo, 'annotations/dlp_doublets.csv')
+s_phase_thresholds_csv = os.path.join(spectrumanalysis_repo, 'annotations/s_phase_thresholds.csv')
+
+image_features_dir = os.path.join(output_directory, 'dlp_image_csvs')
+
+rt_bigwig_filename = os.path.join(config['reference_directory'], 'grch37/wgEncodeUwRepliSeqMcf7WaveSignalRep1.bigWig')
+genome_fasta_filename = os.path.join(config['reference_directory'], 'grch37/GRCh37-lite.fa')
+gtf_filename = os.path.join(config['reference_directory'], 'grch37/Homo_sapiens.GRCh37.73.gtf')
+chr2centro_filename = os.path.join(config['reference_directory'], 'grch37/hg19.chr2centro.json')
+# TODO: add this to to code or data repo or reference directory
+mappability_bedgraph_filename = '/data1/shahs3/isabl_data_lake/software/dependencies/articull/mappabilityEncodeAlign50mer.bedGraph'
+
+# example patients for AR QC notebook
+rates_example_patient1 = 'SPECTRUM-OV-009'
+rates_example_patient2 = 'SPECTRUM-OV-075'
+
+# Location of MEDICC2 output files (version, ID format, and exceptions)
+#
+
+medicc_info = []
+
+medicc2_suffix = '__neither'
+
+for patient_id in signals_info['isabl_patient_id'].unique():
+    medicc_results = os.path.join(output_directory, 'medicc/output', f'{patient_id}{medicc2_suffix}')
+    prefix = f'{patient_id}{medicc2_suffix}'
+
+    medicc_info.append({
+        'isabl_patient_id': patient_id,
+        'medicc_input_filename': os.path.join(medicc_results, f'{prefix}.tsv'),
+        'medicc_cn_filename': os.path.join(medicc_results, f'{prefix}_final_cn_profiles.tsv'),
+        'tree_filename': os.path.join(medicc_results, f'{prefix}_final_tree.new'),
+        'events_filename': os.path.join(medicc_results, f'{prefix}_copynumber_events_df.tsv'),
+    })
+medicc_info = pd.DataFrame(medicc_info)
+
+work_dir = os.path.join(output_directory, 'work/')
+scripts_dir = os.path.join(spectrumanalysis_repo, 'pipelines/scdna/bin')
+
+os.environ['PATH'] += ':' + scripts_dir
+
+
+rule run045:
+    input:
+        output_directory+'/tree_snv/outputs/SPECTRUM-OV-045_general_snv_tree_assignment.csv',
+
+rule patient_outputs:
+    input:
+        # Generated by rules/generate_anndatas.smk
+        expand(os.path.join(output_directory, "preprocessing/signals/signals_{patient_id}.h5"), patient_id=patient_ids),
+        
+        # Generated by rules/hscn_qc.smk
+        expand(os.path.join(output_directory, "preprocessing/s_phase_qc/s_phase_qc_{patient_id}.pdf"), patient_id=patient_ids),
+
+        # Generated by rules/sanokoff_ar.smk
+        expand(os.path.join(output_directory, "postprocessing/sankoff_ar/greedy_events/{patient_id}/sankoff_ar_{patient_id}_copynumber_events_df.tsv"), patient_id=patient_ids),
+        expand(os.path.join(output_directory, "postprocessing/sankoff_ar/greedy_events/{patient_id}/sankoff_ar_{patient_id}_events_overlap.tsv"), patient_id=patient_ids),
+        expand(os.path.join(output_directory, "postprocessing/sankoff_ar/greedy_events/{patient_id}/sankoff_ar_{patient_id}_rates.tsv"), patient_id=patient_ids),
+
+        # Aggregated anndatas and doubleTime/tree_snv analysis generated by snv_analysis.smk
+        expand(output_directory+'/sbmclone/sbmclone_{patient_id}_snv.h5', patient_id=patient_ids),
+        expand(output_directory+'/tree_snv/inputs/{patient_id}_cna_clustered.h5', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/inputs/{patient_id}_general_clone_adata.h5', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/postprocessing/{patient_id}_clones_pruned.pickle', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/postprocessing/{patient_id}_branch_info.csv.gz', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/postprocessing/{patient_id}_cluster_info.csv.gz', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/postprocessing/{patient_id}_cell_info.csv.gz', patient_id=tree_snv_patient_ids),
+
+rule all:
+    input:
+        # Generated by rules/generate_anndatas.smk
+        expand(os.path.join(output_directory, "preprocessing/signals/signals_{patient_id}.h5"), patient_id=patient_ids),
+        
+        # Generated by rules/hscn_qc.smk
+        expand(os.path.join(output_directory, "preprocessing/s_phase_qc/s_phase_qc_{patient_id}.pdf"), patient_id=patient_ids),
+
+        # Generated by rules/sanokoff_ar.smk
+        expand(os.path.join(output_directory, "postprocessing/sankoff_ar/greedy_events/{patient_id}/sankoff_ar_{patient_id}_copynumber_events_df.tsv"), patient_id=patient_ids),
+        expand(os.path.join(output_directory, "postprocessing/sankoff_ar/greedy_events/{patient_id}/sankoff_ar_{patient_id}_events_overlap.tsv"), patient_id=patient_ids),
+        expand(os.path.join(output_directory, "postprocessing/sankoff_ar/greedy_events/{patient_id}/sankoff_ar_{patient_id}_rates.tsv"), patient_id=patient_ids),
+
+        # Aggregated anndatas and doubleTime/tree_snv analysis generated by snv_analysis.smk
+        expand(output_directory+'/sbmclone/sbmclone_{patient_id}_snv.h5', patient_id=patient_ids),
+        expand(output_directory+'/tree_snv/inputs/{patient_id}_cna_clustered.h5', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/inputs/{patient_id}_general_clone_adata.h5', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/postprocessing/{patient_id}_clones_pruned.pickle', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/postprocessing/{patient_id}_branch_info.csv.gz', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/postprocessing/{patient_id}_cluster_info.csv.gz', patient_id=tree_snv_patient_ids),
+        expand(output_directory+'/tree_snv/postprocessing/{patient_id}_cell_info.csv.gz', patient_id=tree_snv_patient_ids),
+
+        ### Cohort-level terminal outputs
+        os.path.join(output_directory, "preprocessing/hscn_normal_classifier/normalcells_spectrum.csv"),
+        os.path.join(output_directory, "postprocessing/sankoff_ar/greedy_events/sankoff_ar_events.tsv"),
+        os.path.join(output_directory, "postprocessing/sankoff_ar/sankoff_ar_rates.tsv"),
+    
+        output_directory+"/amplifications/amp_events.csv",
+
+        os.path.join(output_directory, "preprocessing/summary/filtered_cell_table.csv.gz"),
+        os.path.join(output_directory, "preprocessing/segment_stats/segment_data.csv.gz"),
+        os.path.join(output_directory, "sbmclone/sbmclone_cell_table.csv.gz"),
+        
+        os.path.join(output_directory, 'notebooks/rconnect.html')
+
+rule notebooks:
+    input:
+        expand(os.path.join(output_directory, "notebooks/s_phase_classification/s_phase_classification_{patient_id}.ipynb"), patient_id=patient_ids),
+        expand(os.path.join(output_directory, "notebooks/baf_filtering/baf_filtering_{patient_id}.ipynb"), patient_id=patient_ids),
+        expand(os.path.join(output_directory, "notebooks/signals/signals_{patient_id}.ipynb"), patient_id=patient_ids),
+        expand(os.path.join(output_directory, "notebooks/sankoff_ar/{events_key}_events/sankoff_ar_{patient_id}.ipynb"), patient_id=patient_ids, events_key=['greedy']),
+        expand(os.path.join(output_directory, "notebooks/sbmclone/sbmclone_{patient_id}.ipynb"), patient_id=patient_ids),
+
+rule rconnect:
+    input:
+        os.path.join(output_directory, 'notebooks/rconnect.html')
+
+include: "rules/amplifications.smk"
+include: "rules/generate_anndatas.smk"
+include: "rules/hscn_qc.smk"
+include: "rules/medicc2.smk"
+include: "rules/pairwise_distances.smk"
+include: "rules/sankoff_ar.smk"
+include: "rules/sbmclone.smk"
+include: "rules/snv_analysis.smk"
