@@ -32,13 +32,13 @@ import pickle
 ```
 
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
 ```
 
 # load hmmcopy tables to get total sequenced cells
 
 ```python
-hmmcopy_table = pd.read_csv('/data1/shahs3/users/myersm2/repos/spectrumanalysis/pipelines/scdna/inputs/hmmcopy_table.csv')
+hmmcopy_table = pd.read_csv('../pipelines/scdna/inputs/hmmcopy_table.csv')
 aliquot2cells = {}
 all_depth = []
 all_breadth = []

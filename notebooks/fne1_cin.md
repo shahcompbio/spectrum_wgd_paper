@@ -25,7 +25,7 @@ import matplotlib.colors as mcolors
 ```
 
 ```python
-colors_yaml = yaml.safe_load(open('/data1/shahs3/users/myersm2/repos/spectrumanalysis/config/colors.yaml', 'r').read())
+colors_yaml = yaml.safe_load(open('../config/colors.yaml', 'r').read())
 ```
 
 ```python
@@ -37,15 +37,15 @@ sample_ids = [
 ]
 
 hmmcopy_metrics = {
-    'FNE1_p53mut_DMSO': '/data1/shahs3/isabl_data_lake/analyses/42/75/44275/results/SHAH_H003339_T05_01_DLP01_metrics.csv.gz',
-    'FNE1_p53mut_Reversine': '/data1/shahs3/isabl_data_lake/analyses/42/76/44276/results/SHAH_H003339_T06_01_DLP01_metrics.csv.gz',
-    'FNE1_p53ko_px17_CC': '/data1/shahs3/isabl_data_lake/analyses/51/46/45146/results/SHAH_H003339_T08_01_DLP01_metrics.csv.gz',
+    'FNE1_p53mut_DMSO': 'isabl_data_lake/analyses/42/75/44275/results/SHAH_H003339_T05_01_DLP01_metrics.csv.gz',
+    'FNE1_p53mut_Reversine': 'isabl_data_lake/analyses/42/76/44276/results/SHAH_H003339_T06_01_DLP01_metrics.csv.gz',
+    'FNE1_p53ko_px17_CC': 'isabl_data_lake/analyses/51/46/45146/results/SHAH_H003339_T08_01_DLP01_metrics.csv.gz',
 }
 
 hmmcopy_reads = {
-    'FNE1_p53mut_DMSO': '/data1/shahs3/isabl_data_lake/analyses/42/75/44275/results/SHAH_H003339_T05_01_DLP01_hmmcopy_reads.csv.gz',
-    'FNE1_p53mut_Reversine': '/data1/shahs3/isabl_data_lake/analyses/42/76/44276/results/SHAH_H003339_T06_01_DLP01_hmmcopy_reads.csv.gz',
-    'FNE1_p53ko_px17_CC': '/data1/shahs3/isabl_data_lake/analyses/51/46/45146/results/SHAH_H003339_T08_01_DLP01_hmmcopy_reads.csv.gz',
+    'FNE1_p53mut_DMSO': 'isabl_data_lake/analyses/42/75/44275/results/SHAH_H003339_T05_01_DLP01_hmmcopy_reads.csv.gz',
+    'FNE1_p53mut_Reversine': 'isabl_data_lake/analyses/42/76/44276/results/SHAH_H003339_T06_01_DLP01_hmmcopy_reads.csv.gz',
+    'FNE1_p53ko_px17_CC': 'isabl_data_lake/analyses/51/46/45146/results/SHAH_H003339_T08_01_DLP01_hmmcopy_reads.csv.gz',
 }
 
 metrics = []
@@ -569,12 +569,12 @@ adata[adata.obs.cluster_id == wgd_cluster].obs.ploidy.mean()
 
 ```python
 from IPython.display import SVG, display
-display(SVG('/data1/shahs3/users/myersm2/repos/spectrum-figures/figures/final/model/fne_barplot.svg'))
+display(SVG('repos/spectrum-figures/figures/final/model/fne_barplot.svg'))
 ```
 
 ```python
 from IPython.display import SVG, display
-display(SVG('/data1/shahs3/users/myersm2/repos/spectrum-figures/figures/final/model/rpe_barplot.svg'))
+display(SVG('repos/spectrum-figures/figures/final/model/rpe_barplot.svg'))
 ```
 
 ```python

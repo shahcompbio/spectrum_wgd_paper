@@ -136,7 +136,7 @@ cohort_mn = {}
 
 # Load mn/pn data
 
-slide_dirs = glob.glob('/data1/shahs3/users/vazquezi/projects/spectrum/results/if/v25/qupath/outputs/tissue_object_detection/slide/*_cGAS_STING_p53_panCK_CD8_DAPI_R1/cgas_sting_p53_panck_cd8_dapi/')
+slide_dirs = glob.glob('users/vazquezi/projects/spectrum/results/if/v25/qupath/outputs/tissue_object_detection/slide/*_cGAS_STING_p53_panCK_CD8_DAPI_R1/cgas_sting_p53_panck_cd8_dapi/')
 
 for slide_dir in tqdm.tqdm(slide_dirs):
     image_name = slide_dir.split('/')[-3]
@@ -157,7 +157,7 @@ for slide_dir in tqdm.tqdm(slide_dirs):
     region_annotations = region_annotations[region_annotations['classification'].map(lambda a: a['name']) == 'Tumor']
 
     # Read ROI definitions
-    roi_dir = '/data1/shahs3/users/vazquezi/projects/spectrum/pipelines/if/qupath/roi-annotation-cgas-sting-p53-panck-cd8-dapi/annotations/roi'
+    roi_dir = 'users/vazquezi/projects/spectrum/pipelines/if/qupath/roi-annotation-cgas-sting-p53-panck-cd8-dapi/annotations/roi'
     roi_annotations_geojson = os.path.join(roi_dir, f'{image_name}.geojson')
 
     if not os.path.exists(roi_annotations_geojson):

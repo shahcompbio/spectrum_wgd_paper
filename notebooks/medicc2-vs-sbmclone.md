@@ -33,7 +33,7 @@ from copy import deepcopy
 # compare SBMClone clustering to other clusterings of cells
 
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
 
 ```
 
@@ -165,7 +165,7 @@ for p, tree in tqdm.tqdm(trees.items()):
 # analyze ARI in context of other features
 
 ```python
-sigs = pd.read_table('/data1/shahs3/users/myersm2/repos/spectrumanalysis/annotations/mutational_signatures.tsv').set_index('patient_id')
+sigs = pd.read_table('../annotations/mutational_signatures.tsv').set_index('patient_id')
 ```
 
 ```python

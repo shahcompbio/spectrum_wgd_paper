@@ -47,13 +47,13 @@ from statannotations.Annotator import Annotator
 ```
 
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
-colors_yaml = safe_load(open('/data1/shahs3/users/myersm2/repos/spectrumanalysis/config/colors.yaml', 'r').read())
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
+colors_yaml = safe_load(open('../config/colors.yaml', 'r').read())
 wgd_colors = {0:mcolors.to_hex((197/255, 197/255, 197/255)),
               1:mcolors.to_hex((252/255, 130/255, 79/255)),
               2:mcolors.to_hex((170/255, 0, 0/255))}
 
-data_dir = '/data1/shahs3/users/myersm2/repos/spectrum-figures/compute-read-overlaps/output'
+data_dir = 'repos/spectrum-figures/compute-read-overlaps/output'
 
 ```
 

@@ -30,7 +30,7 @@ import os
 import tqdm
 ```
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
 
 ```
 

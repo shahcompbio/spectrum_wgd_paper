@@ -36,8 +36,8 @@ from yaml import safe_load
 ```
 
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
-colors_yaml = safe_load(open('/data1/shahs3/users/myersm2/repos/spectrum-genomic-instability/resources/annotation/colors.yaml', 'r').read())
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
+colors_yaml = safe_load(open('repos/spectrum-genomic-instability/resources/annotation/colors.yaml', 'r').read())
 bootstrap_repetitions = 500
 
 

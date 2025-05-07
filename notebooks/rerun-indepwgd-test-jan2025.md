@@ -56,13 +56,13 @@ from IPython.display import Image
 ```
 
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
 exclude_patients = ['SPECTRUM-OV-024', 'SPECTRUM-OV-125']
 
 ```
 
 ```python
-colors_dict = yaml.safe_load(open('/data1/shahs3/users/myersm2/repos/spectrumanalysis/config/colors.yaml', 'r'))
+colors_dict = yaml.safe_load(open('../config/colors.yaml', 'r'))
 sbm_adata_stem = os.path.join(pipeline_outputs, 'sbmclone')
 patients = [a.split('_')[0] for a in os.listdir(sbm_adata_stem)]
 clustered_adata_form =  os.path.join(pipeline_outputs, 'tree_snv/inputs/{}_cna_clustered.h5')

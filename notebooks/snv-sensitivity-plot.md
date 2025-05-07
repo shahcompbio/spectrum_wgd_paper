@@ -41,13 +41,13 @@ matplotlib.rcParams['svg.fonttype'] = 'none'
 ```
 
 ```python
-cohort = pd.read_csv('/data1/shahs3/users/myersm2/repos/downsampling_smk/quick_sample_table_both.csv')
+cohort = pd.read_csv('repos/downsampling_smk/quick_sample_table_both.csv')
 
-orig_articull_stem = '/data1/shahs3/users/satasg/archive/2023/snv_filter/results/SPECTRUM/0817_updatedmodel_fullcohort/'
-output_stem = '/data1/shahs3/users/myersm2/spectrum-snv-detection-downsampling'
+orig_articull_stem = 'users/satasg/archive/2023/snv_filter/results/SPECTRUM/0817_updatedmodel_fullcohort/'
+output_stem = 'users/myersm2/spectrum-snv-detection-downsampling'
 cell_list_stem = '/juno/work/shah/users/myersm2/misseg/downsampling/quick_samples'
 
-pipeline_outputs_dir = '/data1/shahs3/users/myersm2/spectrum-dlp-pipeline/v5.2/'
+pipeline_outputs_dir = 'users/myersm2/spectrum-dlp-pipeline/v5.2/'
 tree_snv_inputs_dir = pipeline_outputs_dir + '/tree_snv/inputs/'
 ```
 

@@ -31,9 +31,9 @@ matplotlib.rcParams['svg.fonttype'] = 'none'
 ```
 
 ```python
-ignacio_repo = '/data1/shahs3/users/myersm2/repos/spectrum-genomic-instability'
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
-spectrumanalysis_repo =  '/data1/shahs3/users/myersm2/repos/spectrumanalysis'
+ignacio_repo = 'repos/spectrum-genomic-instability'
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
+spectrumanalysis_repo =  '.'
 ```
 
 # load DLP data and aggregate by patient
@@ -59,7 +59,7 @@ patient_mapping
 ```
 
 ```python
-facets = pd.read_table('/data1/shahs3/users/vazquezi/projects/ccs/shared/resources/impact/cohort-level/50K/facets/2022_02_09/msk_impact_facets_annotated.cohort.txt.gz')
+facets = pd.read_table('users/vazquezi/projects/ccs/shared/resources/impact/cohort-level/50K/facets/2022_02_09/msk_impact_facets_annotated.cohort.txt.gz')
 ```
 
 ```python

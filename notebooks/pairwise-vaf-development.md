@@ -34,7 +34,7 @@ import vetica.mpl
 ```
 
 ```python
-project_dir = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
+project_dir = pipeline_dir # path to root directory of scWGS pipeline outputs
 
 ```
 

@@ -23,7 +23,7 @@ import yaml
 ```
 
 ```python
-colors_yaml = yaml.safe_load(open('/data1/shahs3/users/myersm2/repos/spectrumanalysis/config/colors.yaml', 'r').read())
+colors_yaml = yaml.safe_load(open('../config/colors.yaml', 'r').read())
 
 sample_ids = [
     'RPE-1-p53-nocadazole',
@@ -33,17 +33,17 @@ sample_ids = [
 ]
 
 hmmcopy_metrics = {
-    'RPE-1-p53-nocadazole': '/data1/shahs3/isabl_data_lake/analyses/36/08/23608/results/128680A_metrics.csv.gz',
-    'RPE-1-p53-DMSO': '/data1/shahs3/isabl_data_lake/analyses/39/27/23927/results/128676A_metrics.csv.gz',
-    'RPE-1-p53-reversine': '/data1/shahs3/isabl_data_lake/analyses/39/28/23928/results/128676A_metrics.csv.gz',
-    'RPE-1_p30_control': '/data1/shahs3/isabl_data_lake/analyses/10/45/41045/results/SHAH_H002194_T44_01_DLP01_hmmcopy_metrics.csv.gz',
+    'RPE-1-p53-nocadazole': 'isabl_data_lake/analyses/36/08/23608/results/128680A_metrics.csv.gz',
+    'RPE-1-p53-DMSO': 'isabl_data_lake/analyses/39/27/23927/results/128676A_metrics.csv.gz',
+    'RPE-1-p53-reversine': 'isabl_data_lake/analyses/39/28/23928/results/128676A_metrics.csv.gz',
+    'RPE-1_p30_control': 'isabl_data_lake/analyses/10/45/41045/results/SHAH_H002194_T44_01_DLP01_hmmcopy_metrics.csv.gz',
 }
 
 hmmcopy_reads = {
-    'RPE-1-p53-nocadazole': '/data1/shahs3/isabl_data_lake/analyses/36/04/23604/results/128680A_reads.csv.gz',
-    'RPE-1-p53-DMSO': '/data1/shahs3/isabl_data_lake/analyses/39/21/23921/results/128676A_reads.csv.gz',
-    'RPE-1-p53-reversine': '/data1/shahs3/isabl_data_lake/analyses/39/22/23922/results/128676A_reads.csv.gz',
-    'RPE-1_p30_control': '/data1/shahs3/isabl_data_lake/analyses/10/45/41045/results/SHAH_H002194_T44_01_DLP01_hmmcopy_reads.csv.gz',
+    'RPE-1-p53-nocadazole': 'isabl_data_lake/analyses/36/04/23604/results/128680A_reads.csv.gz',
+    'RPE-1-p53-DMSO': 'isabl_data_lake/analyses/39/21/23921/results/128676A_reads.csv.gz',
+    'RPE-1-p53-reversine': 'isabl_data_lake/analyses/39/22/23922/results/128676A_reads.csv.gz',
+    'RPE-1_p30_control': 'isabl_data_lake/analyses/10/45/41045/results/SHAH_H002194_T44_01_DLP01_hmmcopy_reads.csv.gz',
 }
 
 metrics = []

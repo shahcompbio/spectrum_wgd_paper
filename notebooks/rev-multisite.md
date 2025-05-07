@@ -33,12 +33,12 @@ from collections import Counter
 ```
 
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
 ```
 
 ```python
-colors_dict = safe_load(open('/data1/shahs3/users/myersm2/repos/spectrumanalysis/config/colors.yaml', 'r').read())
-sigs = pd.read_table('/data1/shahs3/users/myersm2/repos/spectrumanalysis/annotations/mutational_signatures.tsv').set_index('patient_id').consensus_signature
+colors_dict = safe_load(open('../config/colors.yaml', 'r').read())
+sigs = pd.read_table('../annotations/mutational_signatures.tsv').set_index('patient_id').consensus_signature
 wgd_colors = {0:mcolors.to_hex((197/255, 197/255, 197/255)),
               1:mcolors.to_hex((252/255, 130/255, 79/255)),
               2:mcolors.to_hex((170/255, 0, 0/255))}
@@ -321,29 +321,6 @@ fig.supylabel("nWGD")
 plt.tight_layout()
 ```
 
-# [not included -- seems irrelevant and uninteresting] how do SBMClone clones vary across sites and WGD states?
-
-```python
-adata = ad.read_h5ad('/data1/shahs3/users/myersm2/spectrum-dlp-pipeline/v5.2/postprocessing/sankoff_ar/greedy_events/cohort_all_events_bysite.h5')
-```
-
-```python
-all_ns = {}
-all_props = {}
-n_samples = {}
-
-fig = plt.figure(figsize=(12, 12), dpi = 200)
-for i, (p, adata) in enumerate(sorted(multisite.items())):
-    plt.subplot(5, 5, i + 1)
-    df = adata.obs.groupby(['sbmclone_cluster_id', 'brief-site', 'n_wgd'], observed=True).size().unstack()
-    sns.heatmap(df, annot=df)
-    plt.xlabel('')
-    plt.ylabel('')
-
-fig.supxlabel("nWGD")
-fig.supylabel("SBMClone Cluster ID - Anatomical Site")
-plt.tight_layout()
-```
 
 ```python
 all_ns = {}

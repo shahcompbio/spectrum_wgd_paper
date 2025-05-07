@@ -52,8 +52,8 @@ import tqdm
 ```
 
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
-colors_dict = yaml.safe_load(open('/data1/shahs3/users/myersm2/repos/spectrum-genomic-instability/resources/annotation/colors.yaml', 'r'))
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
+colors_dict = yaml.safe_load(open('repos/spectrum-genomic-instability/resources/annotation/colors.yaml', 'r'))
 
 ```
 

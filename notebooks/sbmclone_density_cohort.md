@@ -27,7 +27,7 @@ from sklearn.metrics import confusion_matrix
 ```
 
 ```python
-agg_dir = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5/sbmclone'
+agg_dir = 'pipeline_dir/sbmclone'
 adatas = {}
 
 for f in tqdm.tqdm(os.listdir(agg_dir)):

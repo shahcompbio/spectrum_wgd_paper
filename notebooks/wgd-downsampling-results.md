@@ -36,9 +36,9 @@ from sklearn.metrics import confusion_matrix
 ```
 
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5/'
-downsampling_repo = '/data1/shahs3/users/myersm2/repos/spectrum-rev-downsampling'
-colors = yaml.safe_load(open('/data1/shahs3/users/myersm2/repos/spectrumanalysis/config/colors.yaml', 'r').read())
+pipeline_outputs = 'pipeline_dir/'
+downsampling_repo = 'repos/spectrum-rev-downsampling'
+colors = yaml.safe_load(open('../config/colors.yaml', 'r').read())
 ```
 
 ```python
@@ -81,7 +81,7 @@ patients = sorted(set([a.split('_')[0] for a in os.listdir(outdir)]))
 ```
 
 ```python
-signals_dir = '/data1/shahs3/users/myersm2/spectrum-dlp-pipeline/v5.2/preprocessing/signals'
+signals_dir = 'users/myersm2/spectrum-dlp-pipeline/v5.2/preprocessing/signals'
 adatas0 = {}
 for f in tqdm.tqdm(os.listdir(signals_dir)):
     p = f.split('.')[0].split('_')[1]

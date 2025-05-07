@@ -36,14 +36,14 @@ matplotlib.rcParams['svg.fonttype'] = 'none'
 ```
 
 ```python
-pipeline_outputs = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
-spectrumanalysis_repo = '/data1/shahs3/users/myersm2/repos/spectrumanalysis'
+pipeline_outputs = pipeline_dir # path to root directory of scWGS pipeline outputs
+spectrumanalysis_repo = '.'
 colors_yaml = safe_load(open(os.path.join(spectrumanalysis_repo, 'config/colors.yaml'), 'r').read())
 wgd_colors = {0:mcolors.to_hex((197/255, 197/255, 197/255)),
               1:mcolors.to_hex((252/255, 130/255, 79/255)),
               2:mcolors.to_hex((170/255, 0, 0/255))}
 
-data_dir = '/data1/shahs3/users/myersm2/repos/spectrum-figures/compute-read-overlaps/output'
+data_dir = 'repos/spectrum-figures/compute-read-overlaps/output'
 
 ```
 
@@ -131,7 +131,7 @@ plt.savefig(os.path.join(spectrumanalysis_repo, 'figures/edfigure2/cell_diameter
 
 <!-- #raw -->
 # initial version using Minsoo's copy number calls
-mtdna = pd.read_table('/data1/shahs3/users/kimm/project/scDNA/bam/SPECTRUM/cell_info/allcellsfile5.tsv')
+mtdna = pd.read_table('users/kimm/project/scDNA/bam/SPECTRUM/cell_info/allcellsfile5.tsv')
 mtdna['log10_mt_copynumber'] = np.log10(mtdna.mt_copynumber)
 print(len(cell_info), len(mtdna), len(cell_info.merge(mtdna, on='cell_id')))
 

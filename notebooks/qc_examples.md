@@ -30,7 +30,7 @@ import subprocess as sp
 ```
 
 ```python
-pipeline_outdir = '/data1/shahs3/users/myersm2/repos/spectrum_wgd_data5'
+pipeline_outdir = pipeline_dir # path to root directory of scWGS pipeline outputs
 ```
 
 ```python
@@ -253,7 +253,7 @@ example_cells = list(example_doublets) + list(example_sphase) + list(example_nor
 ```
 
 ```python
-dlp_pdfs_dir = '/data1/shahs3/users/myersm2/dlp/images/pdfs'
+dlp_pdfs_dir = 'users/myersm2/dlp/images/pdfs'
 
 ```
 
