@@ -1,0 +1,194 @@
+patient_id	redcap_event_name	redcap_data_access_group	patient_dmp_id	patient_isabl_id	patient_age	patient_age_at_diagnosis	patient_gender	patient_last_known_alive_date	patient_progression_free_survival_status	patient_progression_free_survival_date	patient_overall_survival_status	patient_overall_survival_date	patient_inclusion_exclusion	patient_cohort_version___1	patient_cohort_version___2	patient_cohort_version___3
+SPECTRUM-OV-001	patient_consent_arm_1		P-0039384	SHAH_H002213	72		FEMALE	26652			Alive		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-002	patient_consent_arm_1		P-0039615	SHAH_H000004	72	67	FEMALE	26191	Deceased	356	Deceased	1822	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-003	patient_consent_arm_1		P-0039726	SHAH_H000005	67	61	FEMALE	24475	AWD	454	Alive	2108	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-004	patient_consent_arm_1		P-0039734	SHAH_H000029	76	71	FEMALE	28037	NED	547	Alive	2106	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-005	patient_consent_arm_1		P-0040521	SHAH_H000711	63		FEMALE	23099			Alive		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-006	patient_consent_arm_1		P-0040154	SHAH_H000030	70	64	FEMALE	24474	Deceased	407	Deceased	939	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-007	patient_consent_arm_1		P-0040980	SHAH_H000006	49	43	FEMALE	17955	NED	2045	Alive	2045	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-008	patient_consent_arm_1		P-0041572	SHAH_H000011	67	61	FEMALE	23126	TOC	663	Alive	663	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-009	patient_consent_arm_1		P-0042164	SHAH_H000013	52	47	FEMALE	19188	AWD	1146	Alive	2049	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-010	patient_consent_arm_1		P-0042350	SHAH_H002521	69		FEMALE	23669			Deceased		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-011	patient_consent_arm_1		P-0042351	SHAH_H000721	71	66	FEMALE	26025	NED	1857	Alive	1857	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-012	patient_consent_arm_1		P-0042353	SHAH_H002522	88		FEMALE	31017			Deceased		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-013	patient_consent_arm_1		P-0042738	SHAH_H002523	38		FEMALE	12182			Alive		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-014	patient_consent_arm_1		P-0042548	SHAH_H000009	86	81	FEMALE	31089	Deceased	576	Deceased	1535	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-015	patient_consent_arm_1		P-0042757	SHAH_H000718	52	47	FEMALE	19227	AWD	1611	Alive	2030	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-016	patient_consent_arm_1		P-0042815	SHAH_H000719	62	57	FEMALE	22913	NED	1546	Alive	2026	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-017	patient_consent_arm_1		P-0027793	SHAH_H002524	76		FEMALE	26672			Deceased		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-018	patient_consent_arm_1		P-0046443	SHAH_H000717	66	61	FEMALE	24189	NED	1959	Alive	1959	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-019	patient_consent_arm_1		P-0043569	SHAH_H002525	69		FEMALE	25179			Alive		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-020	patient_consent_arm_1		P-0043617	SHAH_H000709	53	47	FEMALE	19363	NED	1674	Alive	1994	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-021	patient_consent_arm_1		P-0044078	SHAH_H002526	45		FEMALE	14584			Deceased		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-022	patient_consent_arm_1		P-0043571	SHAH_H000019	60	55	FEMALE	22208	AWD	770	Alive	2004	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-023	patient_consent_arm_1		P-0044011	SHAH_H000710	70		FEMALE	24697			Deceased		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-024	patient_consent_arm_1		P-0044784	SHAH_H000020	86	81	FEMALE	30590	Deceased	270	Deceased	1002	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-025	patient_consent_arm_1		P-0044084	SHAH_H000021	77	72	FEMALE	28289	NED	1934	Alive	1934	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-026	patient_consent_arm_1		P-0043587	SHAH_H000022	59	54	FEMALE	21642	AWD	1691	Alive	1980	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-027	patient_consent_arm_1		P-0044136	SHAH_H002527	68		FEMALE	23170			Deceased		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-028	patient_consent_arm_1		P-0045578	SHAH_H000032	58	53	FEMALE	21242	AWD	442	Alive	1952	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-029	patient_consent_arm_1		P-0045312	SHAH_H000712	41	36	FEMALE	13836	TOC	460	Alive	565	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-030	patient_consent_arm_1		P-0044919	SHAH_H000714	73	68	FEMALE	26738	NED	1945	Alive	1945	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-031	patient_consent_arm_1		P-0045494	SHAH_H000023	58	53	FEMALE	21257	NED	1953	Alive	1953	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-032	patient_consent_arm_1		P-0045771	SHAH_H000716	81	76	FEMALE	28762	Deceased	285	Deceased	1089	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-033	patient_consent_arm_1		P-0045890	SHAH_H000715	46	41	FEMALE	17087	NED	1935	Alive	1935	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-034	patient_consent_arm_1		P-0045643	SHAH_H000713	72	67	FEMALE	25233	Deceased	375	Deceased	869	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-035	patient_consent_arm_1		P-0045998	SHAH_H002528	47		FEMALE	17186			Alive		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-036	patient_consent_arm_1		P-0045589	SHAH_H000039	79	74	FEMALE	29044	NED	1905	Alive	1905	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-037	patient_consent_arm_1		P-0046401	SHAH_H000024	47	42	FEMALE	17413	NED	1360	Alive	1885	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-038	patient_consent_arm_1		P-0046940	SHAH_H000722	57	53	FEMALE	19694	TOC	466	Alive	466	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-041	patient_consent_arm_1		P-0047883	SHAH_H000025	65	60	FEMALE	23388	Deceased	476	Deceased	1361	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-042	patient_consent_arm_1		P-0046857	SHAH_H000026	80	76	FEMALE	28952	Deceased	395	Deceased	1280	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-044	patient_consent_arm_1		P-0047453	SHAH_H000162	72	67	FEMALE	26308	AWD	449	Alive	1883	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-045	patient_consent_arm_1		P-0047947	SHAH_H000031	59	54	FEMALE	20766	Deceased	471	Deceased	881	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-046	patient_consent_arm_1		P-0049265	SHAH_H000226	56	51	FEMALE	20173	Deceased	704	Deceased	1407	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-047	patient_consent_arm_1		P-0048452	SHAH_H000720	47		FEMALE	17415			Alive		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-048	patient_consent_arm_1		P-0048755	SHAH_H000724	78	73	FEMALE	27720	Deceased	992	Deceased	992	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-049	patient_consent_arm_1		P-0048524	SHAH_H000036	70	65	FEMALE	25649	NED	1857	Alive	1857	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-050	patient_consent_arm_1		P-0051015	SHAH_H000033	80	75	FEMALE	29399	POD	1638	Alive	1865	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-051	patient_consent_arm_1		P-0048525	SHAH_H000034	70	65	FEMALE	25783	AWD	534	Alive	1863	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-052	patient_consent_arm_1		P-0048670	SHAH_H000035	63	59	FEMALE	23278	NED	1785	Alive	1785	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-053	patient_consent_arm_1		P-0048695	SHAH_H000037	48	43	FEMALE	17738	NED	1861	Alive	1861	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-054	patient_consent_arm_1		P-0048554	SHAH_H000038	77	73	FEMALE	27464	Deceased	966	Deceased	966	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-056	patient_consent_arm_1		P-0048923	SHAH_H000723	64	60	FEMALE	23667	AWD	504	Alive	1854	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-057	patient_consent_arm_1		P-0049483	SHAH_H000726	69		FEMALE	25207			Deceased		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-059	patient_consent_arm_1		P-0049560	SHAH_H000728	57	52	FEMALE	20683	Deceased	391	Deceased	1533	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-060	patient_consent_arm_1		P-0050204	SHAH_H002529	58		FEMALE	21418			Alive		Excluded	Checked	Checked	Unchecked
+SPECTRUM-OV-062	patient_consent_arm_1		P-0051447	SHAH_H000725	77	72	FEMALE	28167	Deceased	446	Deceased	1675	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-063	patient_consent_arm_1		P-0051066	SHAH_H000337	71	66	FEMALE	25414	NED	1073	Alive	1073	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-064	patient_consent_arm_1		P-0050669	SHAH_H000727	46	41	FEMALE	16798	NED	1677	Alive	1677	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-065	patient_consent_arm_1		P-0051130	SHAH_H000041	78	74	FEMALE	28310	Deceased	1086	Deceased	1295	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-066	patient_consent_arm_1		P-0052089	SHAH_H000729	56	51	FEMALE	20593	NED	1764	Alive	1764	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-067	patient_consent_arm_1		P-0052274	SHAH_H000149	72	68	FEMALE	25547	Deceased	511	Deceased	814	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-068	patient_consent_arm_1		P-0052385	SHAH_H000180	73	69	FEMALE	25489	Deceased	301	Deceased	396	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-070	patient_consent_arm_1		P-0052359	SHAH_H000181	72	68	FEMALE	26602	POD/AWD	787	Alive	1765	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-071	patient_consent_arm_1		P-0052808	SHAH_H000182	72	68	FEMALE	25825	Deceased	950	Deceased	1157	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-072	patient_consent_arm_1		P-0053010	SHAH_H002530	65	60	FEMALE	23752	NED	938	Alive	1757	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-073	patient_consent_arm_1		P-0053495	SHAH_H000730	68	64	FEMALE	24427	Deceased	287	Deceased	976	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-074	patient_consent_arm_1		P-0054490		52		FEMALE	19270			Alive			Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-075	patient_consent_arm_1		P-0054073	SHAH_H000213	43	39	FEMALE	15492	Deceased	341	Deceased	1165	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-076	patient_consent_arm_1		P-0054019	SHAH_H002531	44	40	FEMALE	15670	Deceased	488	Deceased	1017	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-077	patient_consent_arm_1		P-0054406	SHAH_H000214	62	58	FEMALE	22818	POD while on chemo	471	Alive	1721	Included	Checked	Checked	Unchecked
+SPECTRUM-OV-078	patient_consent_arm_1		P-0054338	SHAH_H000731	53		FEMALE	17910			Deceased		Excluded	Unchecked	Checked	Unchecked
+SPECTRUM-OV-080	patient_consent_arm_1		P-0055809	SHAH_H000338	59	55	FEMALE	21360	Deceased	233	Deceased	1232	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-081	patient_consent_arm_1		P-0056102	SHAH_H000340	68	64	FEMALE	25140	POD/AWD	468	Alive	1624	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-082	patient_consent_arm_1		P-0055908	SHAH_H000339	71	67	FEMALE	26120	NED	1606	Alive	1606	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-083	patient_consent_arm_1		P-0056224	SHAH_H000342	62	58	FEMALE	22780	AWD	1217	Alive	1609	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-085	patient_consent_arm_1		P-0056533	SHAH_H000343	71		FEMALE	25163	Deceased	283	Deceased	645	Excluded	Unchecked	Checked	Unchecked
+SPECTRUM-OV-087	patient_consent_arm_1		P-0056610	SHAH_H002532	82	78	FEMALE	29311	Deceased	340	Deceased	932	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-088	patient_consent_arm_1		P-0056938	SHAH_H002533	63		FEMALE	23209			Alive		Excluded	Unchecked	Checked	Unchecked
+SPECTRUM-OV-089	patient_consent_arm_1		P-0056721	SHAH_H000341	74		FEMALE	25758		283	Deceased	283	Excluded	Unchecked	Checked	Unchecked
+SPECTRUM-OV-090	patient_consent_arm_1		P-0056958	SHAH_H000408	72	69	FEMALE	26637	POD	467	Alive	1588	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-092	patient_consent_arm_1		P-0050400	SHAH_H000416	71	67	FEMALE	26261		1792	Alive	1792	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-093	patient_consent_arm_1		P-0057608	SHAH_H002534	53	49	FEMALE	19361	AWD	560	Deceased	1547	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-094	patient_consent_arm_1		P-0057731	SHAH_H001752	79	75	FEMALE	28905	AWD	1166	Alive	1556	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-095	patient_consent_arm_1		P-0057840	SHAH_H002535	38		FEMALE	13908	POD/AWD	867	Deceased	1502		Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-097	patient_consent_arm_1		P-0058350	SHAH_H002536	62	58	FEMALE	22918	NED	1551	Alive	1551	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-098	patient_consent_arm_1		P-0058190	SHAH_H002537	73	69	FEMALE	26716	AWD	658	Alive	1457	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-099	patient_consent_arm_1		P-0059044	SHAH_H000554	63		FEMALE	22318			Alive		Excluded	Unchecked	Checked	Unchecked
+SPECTRUM-OV-100	patient_consent_arm_1		P-0058975	SHAH_H000701	56	53	FEMALE	20477	Deceased	492	Deceased	1280	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-101	patient_consent_arm_1		P-0034272	SHAH_H002538	73	69	FEMALE	26085		706	Deceased	706	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-102	patient_consent_arm_1		P-0059227	SHAH_H002539	46	42	FEMALE	16788	NED	1510	Alive	1510	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-103	patient_consent_arm_1		P-0059499	SHAH_H002540	71	67	FEMALE	25991	POD	845	Alive	1475	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-104	patient_consent_arm_1		P-0059577	SHAH_H002541	69	66	FEMALE	24945	Deceased	588	Deceased	985	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-105	patient_consent_arm_1		P-0059884	SHAH_H000705	59	55	FEMALE	21046	Deceased	407	Deceased	825	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-106	patient_consent_arm_1		P-0059583	SHAH_H002542	59	55	FEMALE	21724	NED	1486	Alive	1486	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-107	patient_consent_arm_1		P-0060366	SHAH_H000708	62	59	FEMALE	22905	AWD	502	Deceased	1448	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-108	patient_consent_arm_1		P-0059954	SHAH_H002543	55	51	FEMALE	20234	NED	1428	Alive	1428	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-109	patient_consent_arm_1		P-0061288	SHAH_H002544	68		FEMALE	24901			Alive		Excluded	Unchecked	Checked	Unchecked
+SPECTRUM-OV-110	patient_consent_arm_1		P-0059753	SHAH_H000706	60	56	FEMALE	21870	NED	1414	Alive	1414	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-111	patient_consent_arm_1		P-0059972	SHAH_H002545	66	63	FEMALE	24392	AWD	1062	Alive	1495	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-112	patient_consent_arm_1		P-0060511	SHAH_H000707	72	68	FEMALE	26146	NED	1337	Alive	1337	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-113	patient_consent_arm_1		P-0060204	SHAH_H002546	75		FEMALE	26498			Deceased		Excluded	Unchecked	Checked	Unchecked
+SPECTRUM-OV-114	patient_consent_arm_1		P-0059822	SHAH_H002547	56	52	FEMALE	20659			Alive		Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-115	patient_consent_arm_1		P-0060627	SHAH_H001749	57	53	FEMALE	20786	NED	1393	Alive	1393	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-116	patient_consent_arm_1		P-0060931	SHAH_H001750	58	54	FEMALE	21339	NED	1463	Alive	1463	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-117	patient_consent_arm_1		P-0061206	SHAH_H002548	49	46	FEMALE	18175	NED	1456	Alive	1456	Included	Unchecked	Checked	Unchecked
+SPECTRUM-OV-118	patient_consent_arm_1		P-0061784	SHAH_H001753	61	58	FEMALE	22550	NED	1384	Alive	1384	Included	Unchecked	Checked	Checked
+SPECTRUM-OV-119	patient_consent_arm_1		P-0063198	SHAH_H002549	83	80	FEMALE	29823	Deceased	269	Deceased	657	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-120	patient_consent_arm_1		P-0063035	SHAH_H002550	73	70	FEMALE	26855	AWD	937	Alive	1412	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-121	patient_consent_arm_1		P-0062858	SHAH_H002551	78	74	FEMALE	28603	POD/AWD	705	Alive	1402	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-122	patient_consent_arm_1		P-0060588	SHAH_H002552	63		FEMALE	22196		556	Deceased	556		Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-123	patient_consent_arm_1		P-0063481	SHAH_H002553	75	72	FEMALE	27641	POD	357	Deceased	1313	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-124	patient_consent_arm_1		P-0063680	SHAH_H002554	66	63	FEMALE	23051	Deceased	89	Deceased	89	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-125	patient_consent_arm_1		P-0064317	SHAH_H002209	53	50	FEMALE	19539	NED	1350	Alive	1350	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-126	patient_consent_arm_1		P-0064735	SHAH_H001771	66		FEMALE	24365			Alive		Excluded	Unchecked	Unchecked	Checked
+SPECTRUM-OV-127	patient_consent_arm_1		P-0064168	SHAH_H002555	78		FEMALE	27330			Deceased			Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-128	patient_consent_arm_1		P-0064305	SHAH_H002556	66		FEMALE	24389			Alive		Excluded	Unchecked	Unchecked	Checked
+SPECTRUM-OV-129	patient_consent_arm_1		P-0064308	SHAH_H002135	58	55	FEMALE	21169	AWD	556	Deceased	1219	Included	Unchecked	Checked	Checked
+SPECTRUM-OV-130	patient_consent_arm_1		P-0065244	SHAH_H002557	70	67	FEMALE	25159	Deceased	299	Deceased	599	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-131	patient_consent_arm_1		P-0064901	SHAH_H002415	75	72	FEMALE	26880	AWD	359	Alive	687	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-133	patient_consent_arm_1		P-0066666	SHAH_H002023	58	55	FEMALE	21339	NED	371	Alive	1296	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-134	patient_consent_arm_1		P-0067219	SHAH_H002558	77	74	FEMALE	27715		799	Deceased	799	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-135	patient_consent_arm_1		P-0066833	SHAH_H002215	65	62	FEMALE	23974	NED	1275	Alive	1275	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-136	patient_consent_arm_1		P-0067903	SHAH_H002101	78	75	FEMALE	28739	NED	1246	Alive	1246	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-137	patient_consent_arm_1		P-0068780	SHAH_H002020	65	62	FEMALE	24020	AWD	624	Alive	1246	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-138	patient_consent_arm_1		P-0068653	SHAH_H002416	75	72	FEMALE	27068	POD/AWD	299	Alive	669	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-139	patient_consent_arm_1		P-0071512	SHAH_H002102	54	52	FEMALE	19860	AWD/TOC	839	Alive	993	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-140	patient_consent_arm_1		P-0077317	SHAH_H002559	74	72	FEMALE	27249	Deceased	542	Deceased	1016	Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-141	patient_consent_arm_1		P-0074264	SHAH_H002560	51		FEMALE	18812			Alive		Excluded	Unchecked	Unchecked	Checked
+SPECTRUM-OV-142	patient_consent_arm_1		P-0046047	SHAH_H002170	84	82	FEMALE	30916	AWD		Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-143	patient_consent_arm_1		P-0077676	SHAH_H002178	70	67	FEMALE	25571	AWD		Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-144	patient_consent_arm_1		P-0078004	SHAH_H002561	75	73	FEMALE	27678	AWD		Deceased		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-145	patient_consent_arm_1		P-0078826	SHAH_H002562	68	66	FEMALE	25023	AWD		Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-146	patient_consent_arm_1		P-0079572	SHAH_H002206	74	72	FEMALE	27090	NED		Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-147	patient_consent_arm_1		P-0083039		75		FEMALE	26737			Deceased		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-148	patient_consent_arm_1		P-0083560	SHAH_H002563	74	73	FEMALE	27314	AWD		Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-149	patient_consent_arm_1		P-0087390		66	64	FEMALE	24205			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-150	patient_consent_arm_1								AWD					Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-152	patient_consent_arm_1		P-0064318	SHAH_H001991	49		FEMALE	18229			Alive			Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-153	patient_consent_arm_1		P-0088755		78	76	FEMALE	28561	AWD		Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-154	patient_consent_arm_1		P-0092095		70	69	FEMALE	25762	NED		Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-155	patient_consent_arm_1		P-0093944		65		FEMALE	23943			Alive		Excluded	Unchecked	Unchecked	Checked
+SPECTRUM-OV-156	patient_consent_arm_1		P-0094414		69	68	FEMALE	25462	NED		Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-157	patient_consent_arm_1		P-0094429		48	47	FEMALE	17844	POD/AWD		Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-158	patient_consent_arm_1		P-0072219		42	39	FEMALE	15415			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-159	patient_consent_arm_1		P-0096576		33		FEMALE	11851			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-160	patient_consent_arm_1		P-0097780		70	69	FEMALE	25649			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-161	patient_consent_arm_1		P-0098385		63		FEMALE	22909			Deceased		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-162	patient_consent_arm_1		P-0099767		71	70	FEMALE	26148			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-163	patient_consent_arm_1		P-0101139		80	79	FEMALE	29273			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-164	patient_consent_arm_1		P-0100391		68	68	FEMALE	25101			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-165	patient_consent_arm_1		P-0100314		71		FEMALE	25962			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-166	patient_consent_arm_1		P-0100390		63	63	FEMALE	23260			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-167	patient_consent_arm_1		P-0100633		59	59	FEMALE	21900			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-168	patient_consent_arm_1		P-0101393		72	72	FEMALE	26498			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-169	patient_consent_arm_1		P-0101712		69		FEMALE	25340			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-170	patient_consent_arm_1		P-0101953		64		FEMALE	23680			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-171	patient_consent_arm_1		P-0102344		72	71	FEMALE	26298			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-172	patient_consent_arm_1		P-0102339		76	75	FEMALE	27843			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-173	patient_consent_arm_1		P-0102397		69		FEMALE	25400			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-174	patient_consent_arm_1		P-0107317		72	72	FEMALE	26598			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-175	patient_consent_arm_1		P-0103475		65	64	FEMALE	23798			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-176	patient_consent_arm_1		P-0105350		64		FEMALE	23714			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-177	patient_consent_arm_1		P-0105468		52		FEMALE	19102			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-178	patient_consent_arm_1		P-0104685		70	70	FEMALE	25727			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-179	patient_consent_arm_1		P-0109007		42	42	FEMALE	15639			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-180	patient_consent_arm_1		P-0106074		63		FEMALE	23062			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-181	patient_consent_arm_1		P-0106010		65	65	FEMALE	23916			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-182	patient_consent_arm_1		P-0106957		72	72	FEMALE	26404			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-183	patient_consent_arm_1		P-0107587		35		FEMALE	12685			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-184	patient_consent_arm_1		P-0108325		42	42	FEMALE	15472			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-185	patient_consent_arm_1		P-0107937		19		FEMALE	7173			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-186	patient_consent_arm_1		P-0108135		54		FEMALE	19617			Deceased		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-187	patient_consent_arm_1		P-0108760		80	80	FEMALE	29482			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-188	patient_consent_arm_1		P-0109109		59		FEMALE	21569			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-189	patient_consent_arm_1		P-0109917		46	46	FEMALE	16831			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-190	patient_consent_arm_1		P-0109958		66	66	FEMALE	24190			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-191	patient_consent_arm_1		P-0110016		75		FEMALE	27404			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-192	patient_consent_arm_1		P-0109564		55	55	FEMALE	20187			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-193	patient_consent_arm_1		P-0110052		64		FEMALE	23550			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-194	patient_consent_arm_1		P-0110036		48		FEMALE	17543			Alive		Excluded	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-195	patient_consent_arm_1		P-0115446		64		FEMALE	23543			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-196	patient_consent_arm_1		P-0111039		55		FEMALE	20416			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-197	patient_consent_arm_1		P-0110098		68		FEMALE	25158			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-198	patient_consent_arm_1		P-0110353		67		FEMALE	24582			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-199	patient_consent_arm_1		P-0110180		70	70	FEMALE	25854			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-200	patient_consent_arm_1		P-0111285		63		FEMALE	23227			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-201	patient_consent_arm_1		P-0111850		69		FEMALE	25477			Alive		Included	Unchecked	Unchecked	Checked
+SPECTRUM-OV-202	patient_consent_arm_1		P-0111046		67		FEMALE	24538			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-203	patient_consent_arm_1		P-0112258		60		FEMALE	22085			Alive		Included	Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-204	patient_consent_arm_1		P-0114418		49		FEMALE	18212			Alive			Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-205	patient_consent_arm_1		P-0113670		67		FEMALE	24754			Alive			Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-206	patient_consent_arm_1				65		FEMALE	23815			Alive			Unchecked	Unchecked	Unchecked
+SPECTRUM-OV-207	patient_consent_arm_1				56		FEMALE	20502			Alive			Unchecked	Unchecked	Unchecked

@@ -1,0 +1,33 @@
+condition,region,kind,is_wgd,count,n_cells,rate,event_type,sample_id,WGD
+RPE_rev,chromosome,gain,False,2379,364,6.535714285714286,chromosome_gain,RPE1-Rev,nWGD
+RPE_rev,chromosome,loss,False,1867,364,5.1291208791208796,chromosome_loss,RPE1-Rev,nWGD
+RPE_rev,chromosome,loss,True,1850,227,8.14977973568282,chromosome_loss,RPE1-Rev,WGD clone
+RPE_rev,chromosome,gain,True,1252,227,5.515418502202643,chromosome_gain,RPE1-Rev,WGD clone
+RPE_rev,arm,loss,True,391,227,1.722466960352423,arm_loss,RPE1-Rev,WGD clone
+RPE_rev,arm,gain,True,371,227,1.6343612334801763,arm_gain,RPE1-Rev,WGD clone
+control,arm,loss,True,342,99,3.4545454545454546,arm_loss,RPE1-WGD,WGD clone
+RPE_D,arm,loss,True,325,110,2.9545454545454546,arm_loss,RPE1-D,WGD clone
+RPE_rev,arm,gain,False,298,364,0.8186813186813187,arm_gain,RPE1-Rev,nWGD
+RPE_D,chromosome,loss,True,283,110,2.5727272727272728,chromosome_loss,RPE1-D,WGD clone
+control,chromosome,loss,True,256,99,2.585858585858586,chromosome_loss,RPE1-WGD,WGD clone
+RPE_rev,arm,loss,False,217,364,0.5961538461538461,arm_loss,RPE1-Rev,nWGD
+RPE_D,chromosome,gain,False,200,453,0.44150110375275936,chromosome_gain,RPE1-D,nWGD
+control,chromosome,gain,False,161,184,0.875,chromosome_gain,RPE1-WGD,nWGD
+control,arm,gain,True,110,99,1.1111111111111112,arm_gain,RPE1-WGD,WGD clone
+RPE_D,arm,gain,True,99,110,0.9,arm_gain,RPE1-D,WGD clone
+RPE_Noco,chromosome,gain,False,94,116,0.8103448275862069,chromosome_gain,RPE1-Noco,nWGD
+RPE_D,arm,loss,False,85,453,0.18763796909492272,arm_loss,RPE1-D,nWGD
+RPE_D,arm,gain,False,82,453,0.18101545253863136,arm_gain,RPE1-D,nWGD
+RPE_Noco,chromosome,loss,True,80,13,6.153846153846154,chromosome_loss,RPE1-Noco,WGD clone
+control,chromosome,gain,True,54,99,0.5454545454545454,chromosome_gain,RPE1-WGD,WGD clone
+RPE_D,chromosome,loss,False,48,453,0.10596026490066225,chromosome_loss,RPE1-D,nWGD
+RPE_Noco,arm,gain,False,47,116,0.4051724137931034,arm_gain,RPE1-Noco,nWGD
+RPE_Noco,chromosome,loss,False,41,116,0.35344827586206895,chromosome_loss,RPE1-Noco,nWGD
+control,arm,loss,False,38,184,0.20652173913043478,arm_loss,RPE1-WGD,nWGD
+RPE_D,chromosome,gain,True,37,110,0.33636363636363636,chromosome_gain,RPE1-D,WGD clone
+RPE_Noco,chromosome,gain,True,37,13,2.8461538461538463,chromosome_gain,RPE1-Noco,WGD clone
+control,arm,gain,False,29,184,0.15760869565217392,arm_gain,RPE1-WGD,nWGD
+RPE_Noco,arm,loss,False,26,116,0.22413793103448276,arm_loss,RPE1-Noco,nWGD
+RPE_Noco,arm,loss,True,24,13,1.8461538461538463,arm_loss,RPE1-Noco,WGD clone
+control,chromosome,loss,False,16,184,0.08695652173913043,chromosome_loss,RPE1-WGD,nWGD
+RPE_Noco,arm,gain,True,15,13,1.1538461538461537,arm_gain,RPE1-Noco,WGD clone

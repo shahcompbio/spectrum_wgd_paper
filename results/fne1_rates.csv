@@ -1,0 +1,17 @@
+condition,region,kind,is_wgd,count,n_cells,rate,event_type,sample_id,WGD
+FNE1_p53ko_px17_CC,chromosome,gain,True,1200,176,6.818181818181818,chromosome_gain,FNE1-WGD,WGD clone
+FNE1_p53ko_px17_CC,chromosome,loss,True,617,176,3.5056818181818183,chromosome_loss,FNE1-WGD,WGD clone
+FNE1_p53mut_Reversine,chromosome,loss,False,472,478,0.9874476987447699,chromosome_loss,FNE1-Rev,nWGD
+FNE1_p53mut_Reversine,chromosome,gain,False,461,478,0.9644351464435147,chromosome_gain,FNE1-Rev,nWGD
+FNE1_p53ko_px17_CC,chromosome,loss,False,279,439,0.6355353075170843,chromosome_loss,FNE1-WGD,nWGD
+FNE1_p53ko_px17_CC,arm,gain,True,223,176,1.2670454545454546,arm_gain,FNE1-WGD,WGD clone
+FNE1_p53ko_px17_CC,chromosome,gain,False,167,439,0.3804100227790433,chromosome_gain,FNE1-WGD,nWGD
+FNE1_p53ko_px17_CC,arm,loss,True,128,176,0.7272727272727273,arm_loss,FNE1-WGD,WGD clone
+FNE1_p53mut_Reversine,arm,loss,False,61,478,0.12761506276150628,arm_loss,FNE1-Rev,nWGD
+FNE1_p53mut_DMSO,chromosome,gain,False,59,631,0.09350237717908082,chromosome_gain,FNE1-D,nWGD
+FNE1_p53ko_px17_CC,arm,loss,False,59,439,0.13439635535307518,arm_loss,FNE1-WGD,nWGD
+FNE1_p53mut_Reversine,arm,gain,False,56,478,0.11715481171548117,arm_gain,FNE1-Rev,nWGD
+FNE1_p53mut_DMSO,chromosome,loss,False,48,631,0.07606973058637084,chromosome_loss,FNE1-D,nWGD
+FNE1_p53mut_DMSO,arm,loss,False,46,631,0.07290015847860538,arm_loss,FNE1-D,nWGD
+FNE1_p53ko_px17_CC,arm,gain,False,42,439,0.09567198177676538,arm_gain,FNE1-WGD,nWGD
+FNE1_p53mut_DMSO,arm,gain,False,23,631,0.03645007923930269,arm_gain,FNE1-D,nWGD
