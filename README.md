@@ -23,4 +23,22 @@ pip install -e ./
 
 ## Data
 
+Processed data files and links to raw data are located on the project Synapse page: https://www.synapse.org/Synapse:syn66366718 
+
 Notebooks reference environment variable `SPECTRUM_PROJECT_DIR` which should point to the raw data.
+
+## Repository structure
+
+The files in this repository are organized into directories as follows:
+
+* `analyses/if/mn_rates`: micronuclei rates by slide
+* `annotations`: patient-level annotations
+* `config`: color configuration used to generate figures
+* `environments`: configuration files for python and conda environments used to process DLP and IF data
+* `if`: slide-level IF summary statistics
+* `metadata/tables`: tables containing sample summary statistics
+* `notebooks`: notebooks used to analyze processed data and generate figures and final results
+* `pipelines`: pipelines used to process IF and DLP scDNA data
+* `pysrc`: Python package used to process data and generate results
+* `results`: DLP and in vitro data summary statistics
+
